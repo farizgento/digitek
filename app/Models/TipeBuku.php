@@ -11,4 +11,8 @@ class TipeBuku extends Model
     protected $fillable = [
         'nama',
     ];
+    public function buku(){
+    
+        return $this->hasMany(Buku::class);
+    }
 }

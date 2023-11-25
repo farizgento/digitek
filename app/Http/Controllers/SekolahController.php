@@ -42,13 +42,13 @@ class SekolahController extends Controller
             'nama' => 'required|string|max:255',
         ]);
         if($validator->fails()){
-            toast('gagal menambah data','error');
+            toast('gagal mengubah data','error');
             return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
         }
         $sekolah->update([
             'nama' => $request->nama,
         ]);
-        toast('Berhasil mengupdate data','success');
+        toast('Berhasil mengubah data','success');
         return back();
     }
 

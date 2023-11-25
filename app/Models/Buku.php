@@ -9,7 +9,6 @@ class Buku extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'nama',
         'judul',
         'penulis',
         'penerbitan',
@@ -26,4 +25,20 @@ class Buku extends Model
         'jenis_buku_id',
         'sekolah_id',
     ];
+    public function sekolah()
+    {
+        return $this->belongsTo(Sekolah::class,'sekolah_id');
+    }
+    public function tipebuku()
+    {
+        return $this->belongsTo(TipeBuku::class,'tipe_buku_id');
+    }
+    public function jenisbuku()
+    {
+        return $this->belongsTo(JenisBuku::class,'jenis_buku_id');
+    }
+    public function lokasibuku()
+    {
+        return $this->belongsTo(LokasiBuku::class,'lokasi_buku_id');
+    }
 }

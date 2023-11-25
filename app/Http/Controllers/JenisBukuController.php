@@ -41,13 +41,13 @@ class JenisBukuController extends Controller
             'nama' => 'required|string|max:255',
         ]);
         if($validator->fails()){
-            toast('Gagal menambah data','error');
+            toast('Gagal mengubah data','error');
             return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
         }
         $jenisbuku->update([
             'nama' => $request->nama,
         ]);
-        toast('Berhasil menambah data','success');
+        toast('Berhasil mengubah data','success');
         return back();
     }
 
@@ -58,7 +58,7 @@ class JenisBukuController extends Controller
             toast('Berhasil menghapus data','success');
             return back();
         }
-        toast('Berhasil menghapus data','error');
+        toast('Gagal menghapus data','error');
         return back();
     }
 }

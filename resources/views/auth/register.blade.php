@@ -39,8 +39,16 @@
                 <div class="input-group mb-3">
                     <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password" name="password">
                 </div>
-                <div class="input-group mb-1">
+                <div class="input-group mb-3">
                     <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password Confirmation" name="password_confirmation">
+                </div>
+                <div class="input-group">
+                <select class="form-select form-select-lg bg-light fs-6 mb-3" aria-label="Large select example" name="sekolah_id">
+                    <option disabled selected>Pilih Sekolah</option>
+                    @foreach ($sekolahs as $sekolah)
+                    <option value="{{ $sekolah->id }}">{{ $sekolah->nama }}</option>
+                    @endforeach
+                </select>
                 </div>
                 <div class="input-group mb-5 d-flex justify-content-between">
                     <div class="form-check">

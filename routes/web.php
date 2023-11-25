@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BukuController;
 use App\Http\Controllers\JenisBukuController;
+use App\Http\Controllers\LokasiBukuController;
 use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\TipeBukuController;
+use App\Models\LokasiBuku;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +43,24 @@ Route::prefix('super-admin')->middleware(['auth:sanctum','role:super_admin'])->g
     Route::post('/jenis-buku',[JenisBukuController::class,'store'])->name('store-jenis');
     Route::put('/jenis-buku,{jenisbuku}',[JenisBukuController::class,'update'])->name('update-jenis-buku');
     Route::delete('/jenis-buku,{jenisbuku}',[JenisBukuController::class,'delete'])->name('delete-jenis-buku');
+ 
+    // LOKASI BUKU
+    Route::get('/lokasi-buku',[LokasiBukuController::class,'getAllsuper'])->name('lokasi-buku-super');
+    Route::post('/lokasi-buku',[LokasiBukuController::class,'store'])->name('store-lokasi');
+    Route::put('/lokasi-buku,{lokasibuku}',[LokasiBukuController::class,'update'])->name('update-lokasi-buku');
+    Route::delete('/lokasi-buku,{lokasibuku}',[LokasiBukuController::class,'delete'])->name('delete-lokasi-buku');
+ 
+    // TIPE BUKU
+    Route::get('/tipe-buku',[TipeBukuController::class,'getAllsuper'])->name('tipe-super');
+    Route::post('/tipe',[TipeBukuController::class,'store'])->name('store-tipe-super');
+    Route::put('/tipe,{tipebuku}',[TipeBukuController::class,'update'])->name('update-tipe-super');
+    Route::delete('/tipe,{tipebuku}',[TipeBukuController::class,'delete'])->name('delete-tipe-super');
+ 
+    // BUKU
+    Route::get('/buku',[BukuController::class,'getAllsuper'])->name('buku-super');
+    Route::post('/buku',[BukuController::class,'store'])->name('store-buku-super');
+    Route::put('/buku,{buku}',[BukuController::class,'update'])->name('update-buku-super');
+    Route::delete('/buku,{buku}',[BukuController::class,'delete'])->name('delete-buku-super');
     
 });
 

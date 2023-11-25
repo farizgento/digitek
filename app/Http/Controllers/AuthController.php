@@ -16,6 +16,8 @@ class AuthController extends Controller
 {
     use PasswordValidationRules;
 
+    
+
     public function getAllAdmin(Request $request){
 
         if(Auth::user()->hasRole('super_admin')) {

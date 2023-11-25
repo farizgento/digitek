@@ -77,10 +77,22 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Daftar Buku</p>
-                </a>
+              @if (auth()->user()->hasRole('super_admin'))
+              <a href="/super-admin/buku" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                  Daftar buku
+                </p>
+              </a>
+              @endif
+              @if (auth()->user()->hasRole('admin'))
+              <a href="/admin/buku" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                  Daftar buku
+                </p>
+              </a>
+              @endif
               </li>
               <li class="nav-item">
               @if (auth()->user()->hasRole('super_admin'))
@@ -101,16 +113,40 @@
               @endif
               </li>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Daftar Tipe Buku</p>
-                </a>
+              @if (auth()->user()->hasRole('super_admin'))
+              <a href="/super-admin/tipe-buku" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                  Daftar tipe buku
+                </p>
+              </a>
+              @endif
+              @if (auth()->user()->hasRole('admin'))
+              <a href="/admin/tipe-buku" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                  Daftar lokasi buku
+                </p>
+              </a>
+              @endif
               </li>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Daftar Lokasi Buku</p>
-                </a>
+              @if (auth()->user()->hasRole('super_admin'))
+              <a href="/super-admin/lokasi-buku" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                  Daftar lokasi buku
+                </p>
+              </a>
+              @endif
+              @if (auth()->user()->hasRole('admin'))
+              <a href="/admin/lokasi-buku" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                  Daftar lokasi buku
+                </p>
+              </a>
+              @endif
               </li>
             </ul>
           </li>

@@ -58,15 +58,15 @@
         <table class="table table-head-fixed text-nowrap">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>NO</th>
                     <th>Nama</th>
                     <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($sekolahs as $sekolah)
+                @foreach($sekolahs as $key => $sekolah)
                 <tr>
-                    <td>{{ $sekolah->id }}</td>
+                    <td>{{ $key+1 }}</td>
                     <td>{{ $sekolah->nama }}</td>
                     <td>
                         <div class="dropdown">

@@ -11,4 +11,8 @@ class LokasiBuku extends Model
     protected $fillable = [
         'lokasi',
     ];
+    public function buku(){
+    
+        return $this->hasOne(Buku::class);
+    }
 }

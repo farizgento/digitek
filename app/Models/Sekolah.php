@@ -17,4 +17,8 @@ class Sekolah extends Model
     
         return $this->hasOne(User::class);
     }
+    public function buku(){
+    
+        return $this->hasOne(Buku::class);
+    }
 }
