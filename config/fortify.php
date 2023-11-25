@@ -74,7 +74,9 @@ return [
     |
     */
 
-    'home' => RouteServiceProvider::HOME,
+    'home' => RouteServiceProvider::HOME_SUPER_ADMIN,
+    'home_admin' => RouteServiceProvider::HOME_ADMIN,
+    'home_user' => RouteServiceProvider::HOME_USER,
 
     /*
     |--------------------------------------------------------------------------

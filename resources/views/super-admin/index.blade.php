@@ -1,8 +1,5 @@
 @extends('layout.master')
 @section('title','Selamat Datang Admin')
-@section('user')
-{{ auth()->user()->name }}
-@endsection
 @section('content')
 <div class="container-fluid">
         <!-- Small boxes (Stat box) -->

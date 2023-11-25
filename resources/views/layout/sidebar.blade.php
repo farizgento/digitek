@@ -14,7 +14,10 @@
           <img src="{{ asset('adminLTE') }}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">@yield('user')</a>
+          <a href="#" class="d-block">
+            <p>{{   auth()->user()->name }} </p>
+            <p>{{   auth()->user()->sekolah->nama }} </p>
+          </a>
         </div>
       </div>
 
@@ -36,16 +39,26 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            @if (auth()->user()->hasRole('super_admin'))
+            <a href="/super-admin/sekolah" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
                 Sekolah
               </p>
             </a>
+            @endif
+            @if (auth()->user()->hasRole('admin'))
+            <a href="/admin/sekolah" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Sekolah
+              </p>
+            </a>
+            @endif
           </li>
           @if (auth()->user()->hasRole('super_admin'))
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            <a href="/super-admin/admin" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
                 Admin
@@ -70,10 +83,22 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/admin/booking" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Daftar Jenis Buku</p>
-                </a>
+              @if (auth()->user()->hasRole('super_admin'))
+              <a href="/super-admin/jenis-buku" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                  Daftar Jenis Buku
+                </p>
+              </a>
+              @endif
+              @if (auth()->user()->hasRole('admin'))
+              <a href="/admin/jenis-buku" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                  Daftar Jenis Buku
+                </p>
+              </a>
+              @endif
               </li>
               <li class="nav-item">
                 <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
