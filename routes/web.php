@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', function () {
-    return view('dashboard');
-})->name('dashboard-guest');
+    return view('index');
+})->name('index-user');
 
 
 Route::prefix('super-admin')->middleware(['auth:sanctum','role:super_admin'])->group(function () {
