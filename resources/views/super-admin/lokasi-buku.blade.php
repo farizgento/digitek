@@ -30,6 +30,15 @@
                                 <label for="Lokasi">Lokasi/Rak</label>
                                 <input type="text" class="form-control" id="nama" name="lokasi" placeholder="Masukan lokasi buku">
                             </div>
+                            <div class="form-group">
+                                <label for="exampleSelectRounded0">Sekolah</label>
+                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="sekolah_id">
+                                    <option disabled selected>Pilih Sekolah</option>
+                                    @foreach ($sekolahs as $sekolah)
+                                        <option value="{{ $sekolah->id }}">{{ $sekolah->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -60,6 +69,7 @@
                 <tr>
                     <th>No</th>
                     <th>Lokasi</th>
+                    <th>Sekolah</th>
                     <th>Opsi</th>
                 </tr>
             </thead>
@@ -68,6 +78,7 @@
                 <tr>
                     <td>{{ $key+1 }}</td>
                     <td>{{ $lokasibuku->lokasi }}</td>
+                    <td>{{ $lokasibuku->sekolah->nama }}</td>
                     <td>
                         <div class="dropdown">
                             <a class="text-decoration-none text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink{{ $lokasibuku->id }}" data-bs-toggle="dropdown" aria-expanded="false">
@@ -109,6 +120,16 @@
                                 <div class="form-group">
                                     <label for="nama">Nama</label>
                                     <input type="text" class="form-control" id="nama" name="lokasi" value="{{ $lokasibuku->lokasi }}" placeholder="Masukan Lokasi">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleSelectRounded0">Sekolah</label>
+                                    <select class="custom-select rounded-0" id="exampleSelectRounded0" name="sekolah_id">
+                                        @foreach ($sekolahs as $sekolah)
+                                            <option value="{{ $sekolah->id }}" @if($sekolah->id == $lokasibuku->sekolah_id) selected @endif>
+                                                {{ $sekolah->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <!-- /.card-body -->

@@ -21,4 +21,16 @@ class Sekolah extends Model
     
         return $this->hasOne(Buku::class);
     }
+    public function jenisbuku(){
+    
+        return $this->hasOne(JenisBuku::class);
+    }
+    public function tipebuku(){
+    
+        return $this->hasOne(TipeBuku::class);
+    }
+    public function lokasibuku(){
+    
+        return $this->hasOne(LokasiBuku::class);
+    }
 }

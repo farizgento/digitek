@@ -3,24 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\LokasiBuku;
+use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class LokasiBukuController extends Controller
 {
     public function getAllSuper(){
-        $lokasibukus = LokasiBuku::paginate(10);
-        return view('super-admin.lokasi-buku',compact('lokasibukus'));
+        $sekolahs = Sekolah::all();
+        $lokasibukus = LokasiBuku::with('sekolah')->paginate(10);
+        return view('super-admin.lokasi-buku',compact('lokasibukus','sekolahs'));
     }
 
     public function getAllAdmin(){
-        $lokasibukus = LokasiBuku::paginate(10);
-        return view('admin.lokasi-buku',compact('lokasi-bukus'));
+        $currentUserSekolahId = auth()->user()->sekolah_id;
+        $lokasibukus = LokasiBuku::where('sekolah_id', $currentUserSekolahId)->paginate(10);
+        return view('admin.lokasi-buku',compact('lokasibukus'));
     }
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'lokasi' => 'required|string|max:255',
+            'sekolah_id' => 'required|string',
         ]);
         if($validator->fails()){
             toast('Gagal menambah data','error');
@@ -28,6 +32,7 @@ class LokasiBukuController extends Controller
         } else {
             $data = new LokasiBuku();
             $data -> lokasi = $request->input('lokasi');
+            $data -> sekolah_id = $request->input('sekolah_id');
             $result = $data->save();
             if($result){
                 toast('Berhasil menambah data','success');
@@ -39,6 +44,7 @@ class LokasiBukuController extends Controller
 
         $validator = Validator::make($request->all(),[
             'lokasi' => 'required|string|max:255',
+            'sekolah_id' => 'required|string',
         ]);
         if($validator->fails()){
             toast('Gagal mengubah data','error');
@@ -46,6 +52,7 @@ class LokasiBukuController extends Controller
         }
         $lokasibuku->update([
             'lokasi' => $request->lokasi,
+            'sekolah_id' => $request->sekolah_id,
         ]);
         toast('Berhasil mengubah data','success');
         return back();

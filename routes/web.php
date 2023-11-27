@@ -66,6 +66,30 @@ Route::prefix('super-admin')->middleware(['auth:sanctum','role:super_admin'])->g
 
 Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(function () {
 
+    // JENIS BUKU
+    Route::get('/jenis-buku',[JenisBukuController::class,'getAllAdmin'])->name('jenis-buku-admin');
+    Route::post('/jenis-buku',[JenisBukuController::class,'store'])->name('store-jenis-admin');
+    Route::put('/jenis-buku,{jenisbuku}',[JenisBukuController::class,'update'])->name('update-jenis-admin');
+    Route::delete('/jenis-buku,{jenisbuku}',[JenisBukuController::class,'delete'])->name('delete-jenis-admin');
+ 
+    // LOKASI BUKU
+    Route::get('/lokasi-buku',[LokasiBukuController::class,'getAllAdmin'])->name('lokasi-buku-admin');
+    Route::post('/lokasi-buku',[LokasiBukuController::class,'store'])->name('store-lokasi-admin');
+    Route::put('/lokasi-buku,{lokasibuku}',[LokasiBukuController::class,'update'])->name('update-lokasi-admin');
+    Route::delete('/lokasi-buku,{lokasibuku}',[LokasiBukuController::class,'delete'])->name('delete-lokasi-admin');
+ 
+    // TIPE BUKU
+    Route::get('/tipe-buku',[TipeBukuController::class,'getAllAdmin'])->name('tipe-admin');
+    Route::post('/tipe',[TipeBukuController::class,'store'])->name('store-tipe-admin');
+    Route::put('/tipe,{tipebuku}',[TipeBukuController::class,'update'])->name('update-tipe-admin');
+    Route::delete('/tipe,{tipebuku}',[TipeBukuController::class,'delete'])->name('delete-tipe-admin');
+ 
+    // BUKU
+    Route::get('/buku',[BukuController::class,'getAllAdmin'])->name('buku-admin');
+    Route::post('/buku',[BukuController::class,'store'])->name('store-buku-admin');
+    Route::put('/buku,{buku}',[BukuController::class,'update'])->name('update-buku-admin');
+    Route::delete('/buku,{buku}',[BukuController::class,'delete'])->name('delete-buku-admin');
+
     Route::get('/', function () {
         return view('admin.index');
     })->name('admin-index');

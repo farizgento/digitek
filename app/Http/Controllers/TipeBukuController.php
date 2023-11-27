@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JenisBuku;
+use App\Models\Sekolah;
 use App\Models\TipeBuku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -10,18 +11,22 @@ use Illuminate\Support\Facades\Validator;
 class TipeBukuController extends Controller
 {
     public function getAllSuper(){
+        $sekolahs = Sekolah::all();
         $tipebukus = TipeBuku::paginate(10);
-        return view('super-admin.tipe-buku',compact('tipebukus'));
+        return view('super-admin.tipe-buku',compact('tipebukus','sekolahs'));
     }
 
     public function getAllAdmin(){
-        $tipebukus = TipeBuku::paginate(10);
+
+        $currentUserSekolahId = auth()->user()->sekolah_id;
+        $tipebukus = TipeBuku::where('sekolah_id', $currentUserSekolahId)->paginate(10);
         return view('admin.tipe-buku',compact('tipebukus'));
     }
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
+            'sekolah_id' => 'required|string',
         ]);
         if($validator->fails()){
             toast('Gagal menambah data','error');
@@ -29,6 +34,7 @@ class TipeBukuController extends Controller
         } else {
             $data = new TipeBuku();
             $data -> nama = $request->input('nama');
+            $data -> sekolah_id = $request->input('sekolah_id');
             $result = $data->save();
             if($result){
                 toast('Berhasil menambah data','success');
@@ -40,6 +46,7 @@ class TipeBukuController extends Controller
 
         $validator = Validator::make($request->all(),[
             'nama' => 'required|string|max:255',
+            'sekolah_id' => 'required|string',
         ]);
         if($validator->fails()){
             toast('Gagal mengubah data','error');
@@ -47,6 +54,7 @@ class TipeBukuController extends Controller
         }
         $tipebuku->update([
             'nama' => $request->nama,
+            'sekolah_id' => $request->sekolah_id,
         ]);
         toast('Berhasil mengubah data','success');
         return back();

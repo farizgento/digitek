@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('tipe_bukus', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->unsignedBigInteger('sekolah_id');
+            $table->foreign('sekolah_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

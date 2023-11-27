@@ -29,8 +29,19 @@ class BukuController extends Controller
     }
 
     public function getAllAdmin(){
-        $bukus = Buku::paginate(10);
-        return view('admin.-buku',compact('bukus'));
+        $currentUserSekolahId = auth()->user()->sekolah_id;
+
+        $bukus = Buku::with('sekolah','tipebuku','jenisbuku','lokasibuku')->where('sekolah_id', $currentUserSekolahId)->paginate(10);
+        $tipebukus = TipeBuku::where('sekolah_id', $currentUserSekolahId)->get();
+        $jenisbukus = JenisBuku::where('sekolah_id', $currentUserSekolahId)->get();
+        $lokasibukus = LokasiBuku::where('sekolah_id', $currentUserSekolahId)->get();
+
+        return view('admin.buku',compact(
+            'bukus',
+            'tipebukus',
+            'jenisbukus',
+            'lokasibukus',
+        ));
     }
 
     public function store(Request $request){

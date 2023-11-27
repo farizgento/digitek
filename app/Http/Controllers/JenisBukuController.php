@@ -3,24 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\JenisBuku;
+use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class JenisBukuController extends Controller
 {
     public function getAllSuper(){
-        $jenisbukus = JenisBuku::paginate(10);
-        return view('super-admin.jenis-buku',compact('jenisbukus'));
+        $sekolahs = Sekolah::all();
+        $jenisbukus = JenisBuku::with('sekolah')->paginate(10);
+        return view('super-admin.jenis-buku',compact('jenisbukus','sekolahs'));
     }
 
     public function getAllAdmin(){
-        $jenisbukus = JenisBuku::paginate(10);
+        $currentUserSekolahId = auth()->user()->sekolah_id;
+
+        // Get all JenisBuku data where sekolah_id matches the current user's sekolah_id
+        $jenisbukus = JenisBuku::where('sekolah_id', $currentUserSekolahId)->paginate(10);
         return view('admin.jenis-buku',compact('jenisbukus'));
     }
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
+            'sekolah_id' => 'required|string',
         ]);
         if($validator->fails()){
             toast('Gagal menambah data','error');
@@ -28,6 +34,7 @@ class JenisBukuController extends Controller
         } else {
             $data = new JenisBuku();
             $data -> nama = $request->input('nama');
+            $data -> sekolah_id = $request->input('sekolah_id');
             $result = $data->save();
             if($result){
                 toast('Berhasil menambah data','success');
@@ -39,6 +46,7 @@ class JenisBukuController extends Controller
 
         $validator = Validator::make($request->all(),[
             'nama' => 'required|string|max:255',
+            'sekolah_id' => 'required|string',
         ]);
         if($validator->fails()){
             toast('Gagal mengubah data','error');
@@ -46,6 +54,7 @@ class JenisBukuController extends Controller
         }
         $jenisbuku->update([
             'nama' => $request->nama,
+            'sekolah_id' => $request->sekolah_id,
         ]);
         toast('Berhasil mengubah data','success');
         return back();

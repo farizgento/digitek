@@ -10,9 +10,14 @@ class JenisBuku extends Model
     use HasFactory;
     protected $fillable = [
         'nama',
+        'sekolah_id',
     ];
     public function buku(){
     
         return $this->hasMany(Buku::class);
+    }
+    public function sekolah()
+    {
+        return $this->belongsTo(Sekolah::class,'sekolah_id');
     }
 }

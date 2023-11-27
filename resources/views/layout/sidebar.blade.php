@@ -15,8 +15,7 @@
         </div>
         <div class="info">
           <a href="#" class="d-block">
-            <p>{{   auth()->user()->name }} </p>
-            <p>{{   auth()->user()->sekolah->nama }} </p>
+            <p class="fw-bold">{{   auth()->user()->name }} </p>
           </a>
         </div>
       </div>
@@ -41,14 +40,6 @@
           <li class="nav-item">
             @if (auth()->user()->hasRole('super_admin'))
             <a href="/super-admin/sekolah" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>
-                Sekolah
-              </p>
-            </a>
-            @endif
-            @if (auth()->user()->hasRole('admin'))
-            <a href="/admin/sekolah" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
                 Sekolah
@@ -125,7 +116,7 @@
               <a href="/admin/tipe-buku" class="nav-link">
                 <i class="nav-icon far fa-image"></i>
                 <p>
-                  Daftar lokasi buku
+                  Daftar tipe buku
                 </p>
               </a>
               @endif
