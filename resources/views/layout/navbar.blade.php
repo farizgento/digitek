@@ -25,6 +25,7 @@
           <form id="logout-form" action="{{ route('logout') }}" method="POST">
               @csrf
           </form>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">

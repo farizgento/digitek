@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('lokasi');
             $table->unsignedBigInteger('sekolah_id');
-            $table->foreign('sekolah_id')->references('id')->on('users');
+            $table->foreign('sekolah_id')->references('id')->on('sekolahs');
             $table->timestamps();
         });
     }

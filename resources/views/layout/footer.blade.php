@@ -22,6 +22,12 @@
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
+<script src="{{ asset('adminLTE') }}/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script>
+$(function () {
+  bsCustomFileInput.init();
+});
+</script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('adminLTE') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->

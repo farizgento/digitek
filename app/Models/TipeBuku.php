@@ -12,10 +12,17 @@ class TipeBuku extends Model
         'nama',
         'sekolah_id',
     ];
-    public function buku(){
+    // public function buku(){
     
-        return $this->hasMany(Buku::class);
+    //     return $this->hasMany(Buku::class);
+    // }
+
+    // Relasi dengan tabel pivot
+    public function buku()
+    {
+        return $this->belongsToMany(Buku::class, 'buku_id');
     }
+
     public function sekolah()
     {
         return $this->belongsTo(Sekolah::class,'sekolah_id');

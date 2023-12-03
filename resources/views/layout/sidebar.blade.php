@@ -151,10 +151,22 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/forms/general.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Daftar Anggota</p>
+                @if (auth()->user()->hasRole('super_admin'))
+                <a href="/super-admin/member" class="nav-link">
+                  <i class="nav-icon far fa-image"></i>
+                  <p>
+                    Daftar member
+                  </p>
                 </a>
+                @endif
+                @if (auth()->user()->hasRole('admin'))
+                <a href="/admin/member" class="nav-link">
+                  <i class="nav-icon far fa-image"></i>
+                  <p>
+                    Daftar member
+                  </p>
+                </a>
+                @endif
               </li>
               <li class="nav-item">
                 <a href="pages/forms/advanced.html" class="nav-link">

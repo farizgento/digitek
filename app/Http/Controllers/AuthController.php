@@ -29,6 +29,18 @@ class AuthController extends Controller
             return abort(403, 'Unauthorized');
         }
     }
+    public function AdminGetUserBySekolah(Request $request){
+        $currentUserSekolahId = auth()->user()->sekolah_id;
+        $members = User::with('sekolah')
+        ->where('sekolah_id', $currentUserSekolahId)
+        ->whereHas('roles', function ($query) {
+            // Ganti 'nama_role' dengan nama peran yang ingin Anda filter
+            $query->where('name', 'user');
+        })
+        ->paginate(10);
+
+        return view('admin.member', compact('members'));
+    }
     public function addAdmin(Request $request)
     {
         $validator = Validator::make($request->all(),[
@@ -57,8 +69,9 @@ class AuthController extends Controller
         
             // Assign the default role to the user
             $user->assignRole($request->input('role'));
-        
-            return redirect()->route('admin-superadmin')->with('success', 'Berhasil ditambahkan');
+
+            toast('Berhasil tambah data','succes');
+            return back();
         }
     }
     

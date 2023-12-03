@@ -1,5 +1,5 @@
 @extends('layout.master')
-@section('title','Selamat Datang Admin')
+@section('title','Selamat Datang Super Admin')
 @section('content')
 @include('sweetalert::alert')
 <div class="card">
@@ -23,9 +23,18 @@
                     <div class="modal-body">
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="{{ route('store-buku-super') }}" method="post">
+                    <form action="{{ route('store-buku-super') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
+                            <div class="form-group">
+                                <label for="sekolah">Sekolah</label>
+                                <select class="custom-select rounded-0" id="sekolah" name="sekolah_id">
+                                    <option disabled selected>Pilih Sekolah</option>
+                                    @foreach ($sekolahs as $sekolah)
+                                        <option value="{{ $sekolah->id }}">{{ $sekolah->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label for="judul">Judul</label>
                                 <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukan judul buku">
@@ -43,9 +52,11 @@
                                 <input type="text" class="form-control" id="edisi" name="edisi" placeholder="Masukan edisi buku">
                             </div>
                             <div class="form-group">
-                                <label for="nama">Bulan</label>
-                                <input type="text" class="form-control" id="bulan" name="bulan" placeholder="Masukan bulan buku">
-                            </div>
+                                <label>Date:</label>
+                                  <div class="input-group date">
+                                      <input type="date" name="bulan" class="form-control"/>
+                                  </div>
+                              </div>
                             <div class="form-group">
                                 <label for="nama">ISBN</label>
                                 <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Masukan isbn buku">
@@ -55,47 +66,54 @@
                                 <input type="text" class="form-control" id="subyek" name="subyek" placeholder="Masukan subyek buku">
                             </div>
                             <div class="form-group">
-                                <label for="nama">Jenis</label>
-                                <input type="text" class="form-control" id="jenis" name="jenis" placeholder="Masukan jenis buku">
+                                <label for="stok">Stok</label>
+                                <input type="number" class="form-control" name="stok" placeholder="Masukan stok buku">
                             </div>
                             <div class="form-group">
-                                <label for="nama">Path</label>
-                                <input type="text" class="form-control" id="path" name="path" placeholder="Masukan path buku">
+                                <label for="exampleInputFile">Ebook</label>
+                                <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="path" id="exampleInputFile">
+                                    <label class="custom-file-label" for="exampleInputFile">Pilih File Ebook</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="nama">Volume</label>
                                 <input type="text" class="form-control" id="volume" name="volume" placeholder="Masukan volume buku">
                             </div>
                             <div class="form-group">
-                                <label for="nama">sampul</label>
-                                <input type="text" class="form-control" id="sampul" name="sampul_buku" placeholder="Masukan sampul buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleSelectRounded0">Sekolah</label>
-                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="sekolah_id">
-                                    <option disabled selected>Pilih Sekolah</option>
-                                    @foreach ($sekolahs as $sekolah)
-                                        <option value="{{ $sekolah->id }}">{{ $sekolah->nama }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="exampleInputFile">Sampul</label>
+                                <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="sampul_buku" id="exampleInputFile">
+                                    <label class="custom-file-label" for="exampleInputFile">Pilih Sampul</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="exampleSelectRounded0">Jenis Buku</label>
                                 <select class="custom-select rounded-0" id="exampleSelectRounded0" name="jenis_buku_id">
-                                    <option disabled selected>Pilih Jenis Buku</option>
+                                    <option disabled selected>Pilih jenis buku</option>
                                     @foreach ($jenisbukus as $jenisbuku)
                                         <option value="{{ $jenisbuku->id }}">{{ $jenisbuku->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="exampleSelectRounded0">Tipe Buku</label>
-                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="tipe_buku_id">
-                                    <option disabled selected>Pilih tipe buku</option>
-                                    @foreach ($tipebukus as $tipebuku)
-                                        <option value="{{ $tipebuku->id }}">{{ $tipebuku->nama }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="">Tipe buku (genre)</label>
+                                @foreach ($tipebukus as $key => $tipebuku )
+                                <div class="form-check">
+                                    <input class="form-check-input" name="tipe_buku_id[]" value="{{ $tipebuku->id }}" type="checkbox">
+                                    <label class="form-check-label">{{ $tipebuku->nama }}</label>
+                                </div>    
+                                @endforeach
                             </div>
                             <div class="form-group">
                                 <label for="exampleSelectRounded0">Lokasi Buku</label>
@@ -135,6 +153,8 @@
             <thead>
                 <tr>
                     <th>NO</th>
+                    <th>Sekolah</th>
+                    <th>Sampul</th>
                     <th>Judul</th>
                     <th>Penulis</th>
                     <th>Penerbitan</th>
@@ -142,8 +162,10 @@
                     <th>Bulan</th>
                     <th>ISBN</th>
                     <th>Subyek</th>
-                    <th>Jenis</th>
-                    <th>Path</th>
+                    <th>Tipe Buku</th>
+                    <th>Jenis Buku</th>
+                    <th>Lokasi Buku</th>
+                    <th>Ebook</th>
                     <th>Volume</th>
                     <th>Opsi</th>
                 </tr>
@@ -152,6 +174,14 @@
                 @foreach($bukus as $key => $buku)
                 <tr>
                     <td>{{ $key+1 }}</td>
+                    @if($buku->path)
+                    <td>
+                        <td>{{ $buku->sekolah->nama }}</td>        
+                    </td>
+                    @else
+                        <td>Tidak ada</td>
+                    @endif
+                    <td><img src="{{ asset('storage/' . $buku->sampul_buku) }}" alt="Sampul Buku" style="max-width: 100px;"></td>
                     <td>{{ $buku->judul }}</td>
                     <td>{{ $buku->penulis }}</td>
                     <td>{{ $buku->penerbitan }}</td>
@@ -159,9 +189,37 @@
                     <td>{{ $buku->bulan }}</td>
                     <td>{{ $buku->isbn }}</td>
                     <td>{{ $buku->subyek }}</td>
-                    <td>{{ $buku->jenis }}</td>
-                    <td>{{ $buku->path }}</td>
+                    <td> 
+                        @foreach($buku->namatipebukus as $tipebuku)
+                            {{ $tipebuku }}
+                            @if(!$loop->last) {{-- Tampilkan koma jika bukan elemen terakhir --}}
+                                ,
+                            @endif
+                        @endforeach    
+                    </td>
+                    @if($buku->path)
+                    <td>
+                        <td>{{ $buku->jenisbuku->nama }}</td>     
+                    </td>
+                    @else
+                        <td>Tidak ada</td>
+                    @endif
+                    @if($buku->path)
+                    <td>
+                        <td>{{ $buku->lokasibuku->lokasi }}</td> 
+                    </td>
+                    @else
+                        <td>Tidak ada</td>
+                    @endif
+                    @if($buku->path)
+                    <td>
+                        <a href="{{ route('view-ebook-super',$buku) }}" target="_blank">Buka PDF</a>        
+                    </td>
+                    @else
+                        <td>Tidak ada</td>
+                    @endif
                     <td>{{ $buku->volume }}</td>
+                    @if($buku->sekolah_id)
                     <td>
                         <div class="dropdown">
                             <a class="text-decoration-none text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink{{ $buku->id }}" data-bs-toggle="dropdown" aria-expanded="false">
@@ -183,117 +241,144 @@
                             </ul>
                         </div>
                     </td>
+                    @else
+                        <td>-</td>
+                    @endif
+
                 </tr>
 
                 <!-- Modal Edit -->
                 <div class="modal fade" id="editModal{{ $buku->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $buku->id }}" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Ubah data buku</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form action="{{ route('update-buku-super', $buku) }}" method="post">
-                            @csrf
-                            @method('PUT')
-                            <div class="card-body">
-                            <div class="form-group">
-                                <label for="judul">Judul</label>
-                                <input type="text" class="form-control" id="judul" value="{{ $buku->judul }}" name="judul" placeholder="Masukan judul buku">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Ubah data buku</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="form-group">
-                                <label for="nama">penulis</label>
-                                <input type="text" class="form-control" id="penulis" value="{{ $buku->penulis }}" name="penulis" placeholder="Masukan penulis buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama">Penerbitan</label>
-                                <input type="text" class="form-control" id="penerbitan" value="{{ $buku->penerbitan }}" name="penerbitan" placeholder="Masukan penerbitan buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama">Edisi</label>
-                                <input type="text" class="form-control" id="edisi" value="{{ $buku->edisi }}" name="edisi" placeholder="Masukan edisi buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama">Bulan</label>
-                                <input type="text" class="form-control" id="bulan" value="{{ $buku->bulan }}" name="bulan" placeholder="Masukan bulan buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama">ISBN</label>
-                                <input type="text" class="form-control" id="isbn" value="{{ $buku->isbn }}" name="isbn" placeholder="Masukan isbn buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama">Subyek</label>
-                                <input type="text" class="form-control" id="subyek" value="{{ $buku->subyek }}" name="subyek" placeholder="Masukan subyek buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama">Jenis</label>
-                                <input type="text" class="form-control" id="jenis" value="{{ $buku->jenis }}" name="jenis" placeholder="Masukan jenis buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama">Path</label>
-                                <input type="text" class="form-control" id="path" value="{{ $buku->path }}" name="path" placeholder="Masukan path buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama">Volume</label>
-                                <input type="text" class="form-control" id="volume" value="{{ $buku->volume }}" name="volume" placeholder="Masukan volume buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="nama">sampul</label>
-                                <input type="text" class="form-control" id="sampul" value="{{ $buku->sampul_buku }}" name="sampul_buku" placeholder="Masukan sampul buku">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleSelectRounded0">Sekolah</label>
-                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="sekolah_id">
-                                @foreach ($sekolahs as $sekolah)
-                                <option value="{{ $sekolah->id }}" @if($sekolah->id == $buku->sekolah_id) selected @endif>
-                                    {{ $sekolah->nama }}
-                                </option>
-                                @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleSelectRounded0">Jenis Buku</label>
-                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="jenis_buku_id">
-                                @foreach ($jenisbukus as $jenisbuku)
-                                    <option value="{{ $jenisbuku->id }}" @if($jenisbuku->id == $buku->jenis_buku_id) selected @endif>
-                                        {{ $jenisbuku->nama }}
-                                    </option>
-                                @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleSelectRounded0">Tipe Buku</label>
-                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="tipe_buku_id">
-                                    @foreach ($tipebukus as $tipebuku)
-                                        <option value="{{ $tipebuku->id }}" @if($tipebuku->id == $buku->jenis_buku_id) selected @endif>
-                                            {{ $tipebuku->nama }}
+                            <div class="modal-body">
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form action="{{ route('update-buku-super', $buku) }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <div class="card-body">
+                                <div class="form-group">
+                                    <label for="judul">Judul</label>
+                                    <input type="text" class="form-control" id="judul" value="{{ $buku->judul }}" name="judul" placeholder="Masukan judul buku">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama">penulis</label>
+                                    <input type="text" class="form-control" id="penulis" value="{{ $buku->penulis }}" name="penulis" placeholder="Masukan penulis buku">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama">Penerbitan</label>
+                                    <input type="text" class="form-control" id="penerbitan" value="{{ $buku->penerbitan }}" name="penerbitan" placeholder="Masukan penerbitan buku">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama">Edisi</label>
+                                    <input type="text" class="form-control" id="edisi" value="{{ $buku->edisi }}" name="edisi" placeholder="Masukan edisi buku">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama">Bulan</label>
+                                    <input type="text" class="form-control" id="bulan" value="{{ $buku->bulan }}" name="bulan" placeholder="Masukan bulan buku">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama">ISBN</label>
+                                    <input type="text" class="form-control" id="isbn" value="{{ $buku->isbn }}" name="isbn" placeholder="Masukan isbn buku">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama">Subyek</label>
+                                    <input type="text" class="form-control" id="subyek" value="{{ $buku->subyek }}" name="subyek" placeholder="Masukan subyek buku">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama">Jenis</label>
+                                    <input type="text" class="form-control" id="jenis" value="{{ $buku->jenis }}" name="jenis" placeholder="Masukan jenis buku">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Ebook</label>
+                                    <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="path" value="" id="exampleInputFile">
+                                        <label class="custom-file-label" for="exampleInputFile">
+                                            @if($buku->path)
+                                                {{ $buku->path }}
+                                            @else
+                                                Pilih Ebook
+                                            @endif
+                                        </label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Upload File</span>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama">Volume</label>
+                                    <input type="text" class="form-control" id="volume" value="{{ $buku->volume }}" name="volume" placeholder="Masukan volume buku">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Sampul</label>
+                                    @if($buku->sampul_buku)
+                                        <div class="mb-3">
+                                            <img src="{{ asset('storage/' . $buku->sampul_buku) }}" alt="Sampul Buku" class="img-thumbnail" style="max-width: 80px; max-height: 80px;">
+                                        </div>
+                                    @endif
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" name="sampul_buku" value="" id="exampleInputFile">
+                                            <label class="custom-file-label" for="exampleInputFile">
+                                                @if($buku->sampul_buku)
+                                                    {{ $buku->sampul_buku }}
+                                                @else
+                                                    Pilih Sampul
+                                                @endif
+                                            </label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Upload Sampul</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" hidden name="sekolah_id" value="{{ $buku->sekolah_id }}">
+                                <div class="form-group">
+                                    <label for="exampleSelectRounded0">Jenis Buku</label>
+                                    <select class="custom-select rounded-0" id="exampleSelectRounded0" name="jenis_buku_id">
+                                    @foreach ($jenisbukus as $jenisbuku)
+                                        <option value="{{ $jenisbuku->id }}" @if($jenisbuku->id == $buku->jenis_buku_id) selected @endif>
+                                            {{ $jenisbuku->nama }}
                                         </option>
                                     @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleSelectRounded0">Lokasi Buku</label>
-                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="lokasi_buku_id">
-                                    @foreach ($lokasibukus as $lokasibuku)
-                                        <option value="{{ $lokasibuku->id }}" @if($lokasibuku->id == $buku->lokasi_buku_id) selected @endif>
-                                            {{ $lokasibuku->lokasi }}
-                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Tipe buku (genre)</label>
+                                    @foreach ($tipebukus as $key => $tipebuku)
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="tipe_buku_id[]" value="{{ $tipebuku->id }}" type="checkbox" {{ in_array($tipebuku->id, $buku->tipebuku->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                            <label class="form-check-label">{{ $tipebuku->nama }}</label>
+                                        </div>
                                     @endforeach
-                                </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleSelectRounded0">Lokasi Buku</label>
+                                    <select class="custom-select rounded-0" id="exampleSelectRounded0" name="lokasi_buku_id">
+                                        @foreach ($lokasibukus as $lokasibuku)
+                                            <option value="{{ $lokasibuku->id }}" @if($lokasibuku->id == $buku->lokasi_buku_id) selected @endif>
+                                                {{ $lokasibuku->lokasi }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                            </form>
                         </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                        </form>
                     </div>
-                </div>
                 </div>
 
                 <!-- Modal Hapus -->
@@ -312,8 +397,8 @@
                             @method('DELETE')
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <input type="text" disabled class="form-control" id="nama" name="nama" value="{{ $buku->nama }}" placeholder="Masukan nama">
+                                    <label for="nama">Judul</label>
+                                    <input type="text" disabled class="form-control" id="nama" name="judul" value="{{ $buku->judul }}" placeholder="Masukan nama">
                                 </div>
                             </div>
                             <!-- /.card-body -->

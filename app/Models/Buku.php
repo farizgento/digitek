@@ -16,7 +16,6 @@ class Buku extends Model
         'bulan',
         'isbn',
         'subyek',
-        'jenis',
         'path',
         'volume',
         'sampul_buku',
@@ -24,6 +23,7 @@ class Buku extends Model
         'tipe_buku_id',
         'jenis_buku_id',
         'sekolah_id',
+        'stok',
     ];
     public function sekolah()
     {
@@ -31,7 +31,7 @@ class Buku extends Model
     }
     public function tipebuku()
     {
-        return $this->belongsTo(TipeBuku::class,'tipe_buku_id');
+        return $this->belongsToMany(TipeBuku::class, 'buku_tipe_bukus', 'buku_id', 'tipe_buku_id');
     }
     public function jenisbuku()
     {

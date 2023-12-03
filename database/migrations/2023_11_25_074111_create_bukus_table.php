@@ -17,18 +17,18 @@ return new class extends Migration
             $table->string('penulis')->nullable();
             $table->string('penerbitan')->nullable();
             $table->string('edisi')->nullable();
-            $table->string('bulan')->nullable();
+            $table->date('bulan')->nullable();
             $table->string('isbn')->nullable();
             $table->string('subyek')->nullable();
-            $table->string('jenis');
             $table->string('path')->nullable();
             $table->string('volume')->nullable();
             $table->string('sampul_buku');
+            $table->bigInteger('stok')->nullable();
 
-            $table->unsignedBigInteger('lokasi_buku_id');
-            $table->unsignedBigInteger('tipe_buku_id');
-            $table->unsignedBigInteger('jenis_buku_id');
-            $table->unsignedBigInteger('sekolah_id');
+            $table->unsignedBigInteger('lokasi_buku_id')->nullable();
+            $table->unsignedBigInteger('tipe_buku_id')->nullable();;
+            $table->unsignedBigInteger('jenis_buku_id')->nullable();
+            $table->unsignedBigInteger('sekolah_id')->nullable();
 
             $table->foreign('lokasi_buku_id')->references('id')->on('lokasi_bukus')->onDelete('cascade');
             $table->foreign('tipe_buku_id')->references('id')->on('tipe_bukus')->onDelete('cascade');
