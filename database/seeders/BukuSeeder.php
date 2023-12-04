@@ -19,6 +19,10 @@ class BukuSeeder extends Seeder
             'penerbitan' => 'Gramedia Widiasarana Indonesia',
             'bulan' => '2020-03-22', // Format tanggal disesuaikan dengan 'YYYY-MM-DD'
             'isbn' => '9786020523316',
+            'jenis_buku_id' => 1,
+            'lokasi_buku_id'=> 1,
+            'sekolah_id' => 1,
+            'stok' => 100,
             'sampul_buku' => 'sampul/buku1.jpg',
         ]);
 
@@ -28,6 +32,10 @@ class BukuSeeder extends Seeder
             'penerbitan' => 'Kepustakaan Populer Gramedia',
             'bulan' => '2017-09-25', // Format tanggal disesuaikan dengan 'YYYY-MM-DD'
             'isbn' => 'SCOOPG143505',
+            'jenis_buku_id' => 1,
+            'lokasi_buku_id'=> 1,
+            'sekolah_id' => 1,
+            'stok' => 100,
             'sampul_buku' => 'sampul/buku2.jpg',
         ]);
 
@@ -37,6 +45,10 @@ class BukuSeeder extends Seeder
             'penerbitan' => 'Elex Media Komputindo',
             'bulan' => '2023-09-17', // Format tanggal disesuaikan dengan 'YYYY-MM-DD'
             'isbn' => '9786230050244',
+            'jenis_buku_id' => 1,
+            'lokasi_buku_id'=> 1,
+            'sekolah_id' => 1,
+            'stok' => 100,
             'sampul_buku' => 'sampul/buku3.jpg',
         ]);
     }

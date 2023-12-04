@@ -15,10 +15,14 @@ class UserController extends Controller
         if (auth()->check()) {
             $currentUserSekolahId = auth()->user()->sekolah_id;
             $jenisbukus = JenisBuku::where('sekolah_id', $currentUserSekolahId)->get();
+
+            $bukuIds = $request->session()->get('cart', []);
+            $bukucarts = Buku::whereIn('id', $bukuIds)->get();
+
             $bukus = Buku::where('sekolah_id', $currentUserSekolahId)->get();
             $ebooks = Buku::where('sekolah_id', $currentUserSekolahId)
-                ->where('jenis_buku_id', 1)->get();
-            return view('index', compact('jenisbukus', 'bukus', 'ebooks'));
+                ->where('jenis_buku_id', 2)->get();
+            return view('index', compact('jenisbukus', 'bukus', 'ebooks', 'bukucarts'));
         } else {
             $bukus = Buku::whereNull('sekolah_id')->get();
     
@@ -32,11 +36,12 @@ class UserController extends Controller
 
         $bukuIds = $request->session()->get('cart', []);
         $bukucarts = Buku::whereIn('id', $bukuIds)->get();
+
         // Ambil buku berdasarkan jenis buku yang dipilih
         $bukus = Buku::where('sekolah_id', $currentUserSekolahId)
         ->where('jenis_buku_id', $jenisbuku->id)
         ->get();
-        return view('buku',compact('jenisbukus','bukus','bukucarts'));
+        return view('buku',compact('jenisbukus','bukus','bukucarts','jenisbuku'));
     }
     public function addToCart(Request $request, Buku $buku)
     {
@@ -71,6 +76,7 @@ class UserController extends Controller
 
         return back()->with('toast_success', 'Berhasil dihapus dari keranjang');
     }
+
     public function checkout(Request $request)
     {
         $bukuIds = $request->session()->get('cart', []);
@@ -82,38 +88,39 @@ class UserController extends Controller
     
         $currentUserSekolahId = auth()->user()->sekolah_id;
     
-        // Attach buku-buku ke peminjaman dengan melakukan validasi stok terlebih dahulu
-        $bukus = Buku::whereIn('id', $bukuIds)->get();
-        dd($bukus);
-        foreach ($bukus as $buku) {
-            // Validasi stok sebelum membuat peminjaman
-            if ($buku->stok > 0) {
-                $buku->stok--; // Kurangi stok
-                $buku->save(); // Simpan perubahan stok
-            } else {
-                // Jika stok sudah habis, batalkan peminjaman dan beri pesan ke pengguna
-                return back()->with('toast_error', 'Buku ' . $buku->judul . ' tidak dapat dipinjam karena stok habis.');
-            }
+        // Validasi stok dan ambil buku-buku dari keranjang
+        $bukus = Buku::whereIn('id', $bukuIds)->where('stok', '>', 0)->get();
+    
+        if ($bukus->count() === 0) {
+            return back()->with('toast_error', 'Semua buku dalam keranjang sudah habis stoknya.');
         }
     
-        // Simpan data peminjaman setelah validasi stok
-        $peminjaman = new Peminjaman();
-        $peminjaman->denda = 0; // Atur denda sesuai kebutuhan
-        $peminjaman->kondisi_buku = 'belum di isi';
-        $peminjaman->user_id = auth()->user()->id;
-        $peminjaman->sekolah_id = $currentUserSekolahId;
-        $peminjaman->konfirmasi_pinjam = 'ditunda';
-        $peminjaman->konfirmasi_kembali = 'ditunda';
+        // Simpan data peminjaman
+        $peminjaman = new Peminjaman([
+            'denda' => 0,
+            'kondisi_buku' => 'belum di isi',
+            'user_id' => auth()->user()->id,
+            'sekolah_id' => $currentUserSekolahId,
+            'konfirmasi_pinjam' => 'tertunda',
+            'konfirmasi_kembali' => 'tertunda',
+        ]);
         $peminjaman->save();
     
-        foreach ($bukus as $buku) {
-            $peminjaman->buku()->save($buku);
-        }
+        // Synchronize buku-buku ke peminjaman
+        $peminjaman->bukus()->sync($bukus->pluck('id'));
+    
+        // Kurangi stok buku
+        $bukus->each(function ($buku) {
+            $buku->stok--;
+            $buku->save();
+        });
     
         // Hapus keranjang setelah checkout
         $request->session()->forget('cart');
+    
         toast('Pemesanan berhasil! Terima kasih.','toast_success');
         return back();
     }
+    
     
 }

@@ -70,7 +70,7 @@ class AuthController extends Controller
             // Assign the default role to the user
             $user->assignRole($request->input('role'));
 
-            toast('Berhasil tambah data','succes');
+            toast('Berhasil tambah data','success');
             return back();
         }
     }

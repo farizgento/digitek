@@ -169,10 +169,22 @@
                 @endif
               </li>
               <li class="nav-item">
-                <a href="pages/forms/advanced.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Daftar Peminjaman</p>
+                @if (auth()->user()->hasRole('super_admin'))
+                <a href="/super-admin/peminjaman" class="nav-link">
+                  <i class="nav-icon far fa-image"></i>
+                  <p>
+                    Daftar peminjaman
+                  </p>
                 </a>
+                @endif
+                @if (auth()->user()->hasRole('admin'))
+                <a href="/admin/peminjaman" class="nav-link">
+                  <i class="nav-icon far fa-image"></i>
+                  <p>
+                    Daftar peminjaman
+                  </p>
+                </a>
+                @endif
               </li>
             </ul>
           </li>

@@ -13,13 +13,10 @@ class TipeSeeder extends Seeder
      */
     public function run(): void
     {
-        TipeBuku::create([
-            'id' => 1,
-            'nama' => 'Aksi',
-        ]);
-        TipeBuku::create([
-            'id' => 1,
-            'nama' => 'fiksi',
+        TipeBuku::insert([
+            ['id' => 1, 'nama' => 'Fiksi', 'sekolah_id' => 1],
+            ['id' => 2, 'nama' => 'Aksi', 'sekolah_id' => 1],
+            ['id' => 3, 'nama' => 'Horror', 'sekolah_id' => 1],
         ]);
     }
 }

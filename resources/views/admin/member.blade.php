@@ -42,7 +42,7 @@
                                 <label for="password-confirm">Password Confirmation</label>
                                 <input type="password" class="form-control" id="password" name="password_confirmation" placeholder="Masukan password admin">
                             </div>
-                            <input type="text" name="sekolah_id" value="{{ auth()->user()->sekolah_id }}">
+                            <input type="text" hidden name="sekolah_id" value="{{ auth()->user()->sekolah_id }}">
                             <input type="text" name="role" value="user" hidden>
                         </div>
                         <!-- /.card-body -->

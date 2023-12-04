@@ -26,12 +26,10 @@ return new class extends Migration
             $table->bigInteger('stok')->nullable();
 
             $table->unsignedBigInteger('lokasi_buku_id')->nullable();
-            $table->unsignedBigInteger('tipe_buku_id')->nullable();;
             $table->unsignedBigInteger('jenis_buku_id')->nullable();
             $table->unsignedBigInteger('sekolah_id')->nullable();
 
             $table->foreign('lokasi_buku_id')->references('id')->on('lokasi_bukus')->onDelete('cascade');
-            $table->foreign('tipe_buku_id')->references('id')->on('tipe_bukus')->onDelete('cascade');
             $table->foreign('jenis_buku_id')->references('id')->on('jenis_bukus')->onDelete('cascade');
             $table->foreign('sekolah_id')->references('id')->on('sekolahs')->onDelete('cascade');
             $table->timestamps();

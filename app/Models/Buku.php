@@ -41,4 +41,9 @@ class Buku extends Model
     {
         return $this->belongsTo(LokasiBuku::class,'lokasi_buku_id');
     }
+
+    public function peminjamen()
+    {
+        return $this->belongsToMany(Peminjaman::class, 'pivot_peminjamans', 'buku_id', 'peminjaman_id')->withTimestamps();
+    }
 }

@@ -57,56 +57,72 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto my-2 my-lg-0">
                         <li class="nav-item d-flex align-items-center"><a class="nav-link" href="/">Home</a></li>
-                        @if (auth()->check())
+                        @if(auth()->check())
                         <li class="nav-item dropdown d-flex align-items-center">
                             <a class="nav-link dropdown-toggle" href="#" id="koleksiDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Koleksi
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="koleksiDropdown">
-                                @foreach ($jenisbukus as $key => $jenisbuku )
-                                <li><a class="dropdown-item" href="{{ route('buku-user', $jenisbuku) }}">{{ $jenisbuku->nama }}</a></li>
+                                @foreach ($jenisbukus as $key => $jenis )
+                                <li><a class="dropdown-item" href="{{ route('buku-user', $jenis) }}">{{ $jenis->nama }}</a></li>
                                 @endforeach
                             </ul>
                         </li>
                         @endif
                         @if (auth()->check())
-                        <li class="nav-item d-flex align-items-center"><a class="nav-link" href="#">Keranjang</a></li>
+                        <li class="nav-item d-flex align-items-center"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#modalCart">Keranjang</a></li>
                         @endif
                         @if (auth()->check())
-                        <li class="nav-item d-flex align-items-center"><a class="nav-link" href="#">Peminjaman</a></li>
+                        <li class="nav-item d-flex align-items-center"><a class="nav-link" href="{{ route('get-peminjaman-member') }}">Peminjaman</a></li>
                         @endif
                         <li class="nav-item d-flex align-items-center">                            
                             @if (auth()->check())
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="btn btn-outline-dark">Logout</button>
+                                <button type="submit" class="btn btn-outline-dark ms-2">Logout</button>
                             </form>
                             @else
-                                <a class="btn btn-outline-dark" href="/login">Login</a>
+                                <a class="btn btn-outline-dark ms-2" href="/login">Login</a>
                             @endif
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
+        @if (auth()->check())    
         <!-- Modal Keranjang-->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modalCart" tabindex="-1" aria-labelledby="ModalLabelCart" aria-hidden="true">
             <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Keranjang Pinjaman</h1>
+                <h1 class="modal-title fs-5" id="ModalLabelCart">Keranjang Pinjaman</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                ...
+                @foreach($bukucarts as $bukucart)
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="m-0">ID :{{ $bukucart->id }}</p>
+                        <p class="m-0">Judul :{{ $bukucart->judul }}</p>
+                        <form action="{{ route('hapus-cart', $bukucart->id) }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
+                    </div>
+                    <hr>
+                @endforeach
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <form action="{{ route('checkout') }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Pinjam</button>
+                </form>
                 </div>
             </div>
             </div>
         </div>
+        @endif
         <!-- Masthead-->
         <header class="masthead">
             <div class="container px-4 px-lg-5 h-100">

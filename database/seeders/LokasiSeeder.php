@@ -13,9 +13,9 @@ class LokasiSeeder extends Seeder
      */
     public function run(): void
     {
-        LokasiBuku::create([
-            'id' => 1,
-            'lokasi' => 'Website',
+        LokasiBuku::insert([
+            ['id' => 1, 'lokasi' => 'Website', 'sekolah_id' => 1],
+            ['id' => 2, 'lokasi' => 'Rak 1', 'sekolah_id' => 1],
         ]);
     }
 }

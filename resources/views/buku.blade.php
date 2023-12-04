@@ -33,8 +33,8 @@
                                 Koleksi
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="koleksiDropdown">
-                                @foreach ($jenisbukus as $key => $jenisbuku )
-                                <li><a class="dropdown-item" href="{{ route('buku-user', $jenisbuku) }}">{{ $jenisbuku->nama }}</a></li>
+                                @foreach ($jenisbukus as $key => $jenis )
+                                <li><a class="dropdown-item" href="{{ route('buku-user', $jenis) }}">{{ $jenis->nama }}</a></li>
                                 @endforeach
                             </ul>
                         </li>
@@ -42,7 +42,7 @@
                         <li class="nav-item d-flex align-items-center"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#modalCart">Keranjang</a></li>
                         @endif
                         @if (auth()->check())
-                        <li class="nav-item d-flex align-items-center"><a class="nav-link" href="#">Peminjaman</a></li>
+                        <li class="nav-item d-flex align-items-center"><a class="nav-link" href="{{ route('get-peminjaman-member') }}">Peminjaman</a></li>
                         @endif
                         <li class="nav-item d-flex align-items-center">                            
                             @if (auth()->check())

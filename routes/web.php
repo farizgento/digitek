@@ -5,10 +5,12 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\ChartPeminjamanController;
 use App\Http\Controllers\JenisBukuController;
 use App\Http\Controllers\LokasiBukuController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\TipeBukuController;
 use App\Http\Controllers\UserController;
 use App\Models\LokasiBuku;
+use App\Models\Peminjaman;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +33,7 @@ Route::middleware(['auth:sanctum','role:user'])->group(function(){
     Route::get('cart/{buku}',[UserController::class,'addToCart'])->name('add-cart');
     Route::delete('cart/{buku}', [UserController::class, 'removeFromCart'])->name('hapus-cart');
     Route::post('checkout',[UserController::class, 'checkout'])->name('checkout');
+    Route::get('/peminjaman',[PeminjamanController::class,'getByUser'])->name('get-peminjaman-member');
 });
 
 
@@ -72,6 +75,10 @@ Route::prefix('super-admin')->middleware(['auth:sanctum','role:super_admin'])->g
     Route::post('/buku',[BukuController::class,'store'])->name('store-buku-super');
     Route::put('/buku/{buku}',[BukuController::class,'update'])->name('update-buku-super');
     Route::delete('/buku/{buku}',[BukuController::class,'delete'])->name('delete-buku-super');
+
+    // PEMINJAMAN
+    Route::get('/peminjaman',[PeminjamanController::class,'getAllSuper'])->name('peminjaman-super');
+    Route::put('/peminjaman/{peminjaman}',[PeminjamanController::class, 'update'])->name('update-peminjaman-super');
     
 });
 
@@ -102,11 +109,13 @@ Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(functio
     Route::put('/buku/{buku}',[BukuController::class,'update'])->name('update-buku-admin');
     Route::delete('/buku/{buku}',[BukuController::class,'delete'])->name('delete-buku-admin');
 
-    // 
+    // MEMBER
     Route::get('/member',[AuthController::class, 'AdminGetUserBySekolah'])->name('member-admin');
     Route::post('/member',[AuthController::class, 'AddAdmin'])->name('create-member-admin');
-    Route::put('/member',[AuthController::class, 'AdminGetUserBySekolah'])->name('update-member-admin');
-    Route::delete('/member',[AuthController::class, 'AdminGetUserBySekolah'])->name('delete-member-admin');
+
+    // PEMINJAMAN
+    Route::get('/peminjaman',[PeminjamanController::class, 'AdminGetBySekolahID'])->name('peminjaman-admin');
+    Route::put('/peminjaman/{peminjaman}',[PeminjamanController::class, 'update'])->name('update-peminjaman-admin');
 
     Route::get('/', function () {
         return view('admin.index');

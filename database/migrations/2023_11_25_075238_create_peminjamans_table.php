@@ -18,11 +18,9 @@ return new class extends Migration
             $table->enum('konfirmasi_pinjam',['tertunda','ditolak','diterima']);
             $table->enum('konfirmasi_kembali',['tertunda','ditolak','diterima']);
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('buku_id');
             $table->unsignedBigInteger('sekolah_id');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
-            $table->foreign('buku_id')->references('id')->on('bukus')->onDelete('restrict');
             $table->foreign('sekolah_id')->references('id')->on('sekolahs')->onDelete('restrict');
             $table->timestamps();
         });
