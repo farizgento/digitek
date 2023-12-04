@@ -152,6 +152,7 @@
                     <th>Edisi</th>
                     <th>Bulan</th>
                     <th>ISBN</th>
+                    <th>Stok</th>
                     <th>Subyek</th>
                     <th>Tipe Buku</th>
                     <th>Jenis Buku</th>
@@ -172,6 +173,7 @@
                     <td>{{ $buku->edisi }}</td>
                     <td>{{ $buku->bulan }}</td>
                     <td>{{ $buku->isbn }}</td>
+                    <td>{{ $buku->stok }}</td>
                     <td>{{ $buku->subyek }}</td>
                     <td> 
                         @foreach($buku->namatipebukus as $tipebuku)

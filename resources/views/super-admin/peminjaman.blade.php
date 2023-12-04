@@ -64,12 +64,12 @@
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
                                 </li>
-                                {{-- <li class="p-2">
+                                <li class="p-2">
                                     <!-- Tombol Hapus -->
                                     <button class="btn-danger btn-circle w-100" data-bs-toggle="modal" data-bs-target="#hapusModal{{ $peminjaman->id }}">
                                         <i class="fas fa-trash"></i> Hapus
                                     </button>
-                                </li> --}}
+                                </li>
                             </ul>
                         </div>
                     </td>
@@ -140,36 +140,40 @@
                 </div>
                 </div>
 
-                {{-- <!-- Modal Hapus -->
+                <!-- Modal Hapus -->
                 <div class="modal fade" id="hapusModal{{ $peminjaman->id }}" tabindex="-1" aria-labelledby="hapusModalLabel{{ $peminjaman->id }}" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Hapus data jenisbuku</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form action="{{ route('delete-peminjaman-super',$peminjaman) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <input type="text" disabled class="form-control" id="nama" name="nama" value="{{ $peminjaman->nama }}" placeholder="Masukan nama">
-                                </div>
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Hapus data jenisbuku</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <!-- /.card-body -->
+                            <div class="modal-body">
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form action="{{ route('delete-peminjaman-super',$peminjaman) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="nama">Nama</label>
+                                        <input type="text" disabled class="form-control" id="nama" name="name" value="{{ $peminjaman->users->name }}" placeholder="Masukan nama">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nama">Buku</label>
+                                        <input type="text" disabled class="form-control" id="nama" name="buku_id[]" value="{{ implode(', ', $peminjaman->bukus->pluck('judul')->toArray()) }}" placeholder="Masukan nama">
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </div>
+                            </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </div>
-                        </form>
                     </div>
-                </div>
-                </div> --}}
+                    </div>
                 @endforeach
             </tbody>
         </table>

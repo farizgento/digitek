@@ -1,5 +1,5 @@
 @extends('layout.master')
-@section('title','Selamat Datang Admin')
+@section('title','Selamat Datang Super Admin')
 @section('content')
 @include('sweetalert::alert')
 <div class="card">
@@ -23,7 +23,7 @@
                     <div class="modal-body">
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="{{ route('create-member-admin') }}" method="post">
+                    <form action="{{ route('create-member-super') }}" method="post">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
@@ -42,7 +42,15 @@
                                 <label for="password-confirm">Password Confirmation</label>
                                 <input type="password" class="form-control" id="password" name="password_confirmation" placeholder="Masukan password admin">
                             </div>
-                            <input type="text" hidden name="sekolah_id" value="{{ auth()->user()->sekolah_id }}">
+                            <div class="form-group">
+                                <label for="exampleSelectRounded0">Sekolah</label>
+                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="sekolah_id">
+                                    <option disabled selected>Pilih Sekolah</option>
+                                    @foreach ($sekolahs as $sekolah)
+                                        <option value="{{ $sekolah->id }}">{{ $sekolah->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <input type="text" name="role" value="user" hidden>
                         </div>
                         <!-- /.card-body -->

@@ -148,13 +148,17 @@
                         <div class="modal-body">
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="{{ route('delete-tipe-admin',$peminjaman) }}" method="post">
+                        <form action="{{ route('delete-peminjaman-admin',$peminjaman) }}" method="post">
                             @csrf
                             @method('DELETE')
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="nama">Nama</label>
-                                    <input type="text" disabled class="form-control" id="nama" name="nama" value="{{ $peminjaman->nama }}" placeholder="Masukan nama">
+                                    <input type="text" disabled class="form-control" id="nama" name="name" value="{{ $peminjaman->users->name }}" placeholder="Masukan nama">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama">Buku</label>
+                                    <input type="text" disabled class="form-control" id="nama" name="buku_id[]" value="{{ implode(', ', $peminjaman->bukus->pluck('judul')->toArray()) }}" placeholder="Masukan nama">
                                 </div>
                             </div>
                             <!-- /.card-body -->

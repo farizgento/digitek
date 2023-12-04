@@ -7,6 +7,7 @@ use App\Models\JenisBuku;
 use App\Models\Peminjaman;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class PeminjamanController extends Controller
@@ -88,17 +89,48 @@ class PeminjamanController extends Controller
             'konfirmasi_pinjam' => $request->input('konfirmasi_pinjam'),
             'konfirmasi_kembali' => $request->input('konfirmasi_kembali'),
         ]);
+
+        // terapkan kode nya disini
+        $bukuIds = $peminjaman->bukus->pluck('id')->toArray();
+        $bukus = Buku::whereIn('id', $bukuIds);
     
-        // Jika konfirmasi_kembali berubah menjadi 'diterima', tambahkan stok buku
-        if ($peminjaman->isDirty('konfirmasi_kembali') && $peminjaman->konfirmasi_kembali === 'diterima') {
-            $peminjaman->bukus->each(function ($buku) {
-                $buku->stok++;
-                $buku->save();
-            });
-        }
+        // Tambah stok buku
+        $bukus->each(function ($buku) {
+            $buku->stok++;
+            $buku->save();
+        });
     
         toast('Berhasil Mengubah Data', 'success');
         return back();
+    }
+    public function destroy(Peminjaman $peminjaman)
+    {
+        // Mencegah penghapusan jika buku belum dikembalikan
+        if ($peminjaman->konfirmasi_kembali !== 'diterima') {
+            return back()->with('toast_error', 'Peminjaman belum dikembalikan, tidak dapat dihapus.');
+        }
+
+        // Mulai transaksi database
+        DB::beginTransaction();
+
+        try {
+            // Hapus relasi many-to-many antara Peminjaman dan Buku
+            $peminjaman->bukus()->detach();
+
+            // Hapus peminjaman dari database
+            $peminjaman->delete();
+
+            // Commit transaksi
+            DB::commit();
+
+            toast('Peminjaman berhasil dihapus', 'success');
+            return back();
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack();
+
+            return back()->with('toast_error', 'Terjadi kesalahan saat menghapus peminjaman.');
+        }
     }
     
 }

@@ -29,6 +29,18 @@ class AuthController extends Controller
             return abort(403, 'Unauthorized');
         }
     }
+
+    public function getAllMemberSuper(Request $request){
+        if(Auth::user()->hasRole('super_admin')) {
+            $members = User::role('user')->with('sekolah')->paginate(10);
+            $sekolahs = Sekolah::all();
+            return view('super-admin.member', compact('members','sekolahs'));
+        } else {
+            // Handle unauthorized access (e.g., redirect or show an error)
+            return abort(403, 'Unauthorized');
+        }
+    }
+
     public function AdminGetUserBySekolah(Request $request){
         $currentUserSekolahId = auth()->user()->sekolah_id;
         $members = User::with('sekolah')

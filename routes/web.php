@@ -76,10 +76,14 @@ Route::prefix('super-admin')->middleware(['auth:sanctum','role:super_admin'])->g
     Route::put('/buku/{buku}',[BukuController::class,'update'])->name('update-buku-super');
     Route::delete('/buku/{buku}',[BukuController::class,'delete'])->name('delete-buku-super');
 
+    // MEMBER
+    Route::get('/member',[AuthController::class, 'getAllMemberSuper'])->name('member-super');
+    Route::post('/member',[AuthController::class, 'AddAdmin'])->name('create-member-super');
+
     // PEMINJAMAN
     Route::get('/peminjaman',[PeminjamanController::class,'getAllSuper'])->name('peminjaman-super');
     Route::put('/peminjaman/{peminjaman}',[PeminjamanController::class, 'update'])->name('update-peminjaman-super');
-    
+    Route::delete('/peminjaman/{peminjaman}',[PeminjamanController::class,'destroy'])->name('delete-peminjaman-super');
 });
 
 Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(function () {
@@ -116,6 +120,7 @@ Route::prefix('admin')->middleware(['auth:sanctum','role:admin'])->group(functio
     // PEMINJAMAN
     Route::get('/peminjaman',[PeminjamanController::class, 'AdminGetBySekolahID'])->name('peminjaman-admin');
     Route::put('/peminjaman/{peminjaman}',[PeminjamanController::class, 'update'])->name('update-peminjaman-admin');
+    Route::delete('/peminjaman/{peminjaman}',[PeminjamanController::class,'destroy'])->name('delete-peminjaman-admin');
 
     Route::get('/', function () {
         return view('admin.index');

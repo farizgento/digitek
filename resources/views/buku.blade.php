@@ -112,7 +112,7 @@
             <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
                 @foreach ($bukus as $key => $buku )
                 <div class="col">
-                    <div class="card">
+                    <div class="card" style="min-height: 35rem">
                         <img src="{{ asset('storage/' . $buku->sampul_buku) }}" class="card-img-top" style="max-height: 18rem" alt="...">
                         <div class="card-body">
                         <h5 class="card-title">{{ $buku->judul }}</h5>
@@ -162,7 +162,7 @@
         </section>
         <!-- Footer-->
         <footer class="bg-light py-5">
-            <div class="container px-4 px-lg-5"><div class="small text-center text-muted">Copyright &copy; 2023 - Company Name</div></div>
+            <div class="container px-4 px-lg-5"><div class="small text-center text-muted">Copyright &copy; 2023 - DIGITEK</div></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

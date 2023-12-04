@@ -72,7 +72,7 @@
               <a href="/super-admin/buku" class="nav-link">
                 <i class="nav-icon far fa-image"></i>
                 <p>
-                  Daftar buku
+                  Daftar Buku
                 </p>
               </a>
               @endif
@@ -80,7 +80,7 @@
               <a href="/admin/buku" class="nav-link">
                 <i class="nav-icon far fa-image"></i>
                 <p>
-                  Daftar buku
+                  Daftar Buku
                 </p>
               </a>
               @endif
@@ -108,7 +108,7 @@
               <a href="/super-admin/tipe-buku" class="nav-link">
                 <i class="nav-icon far fa-image"></i>
                 <p>
-                  Daftar tipe buku
+                  Daftar Tipe Buku
                 </p>
               </a>
               @endif
@@ -116,7 +116,7 @@
               <a href="/admin/tipe-buku" class="nav-link">
                 <i class="nav-icon far fa-image"></i>
                 <p>
-                  Daftar tipe buku
+                  Daftar Tipe Buku
                 </p>
               </a>
               @endif

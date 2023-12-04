@@ -83,7 +83,6 @@
                     <th>NO</th>
                     <th>Nama</th>
                     <th>Sekolah</th>
-                    <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,90 +91,7 @@
                     <td>{{ $key+1 }}</td>
                     <td>{{ $admin->name }}</td>
                     <td>{{ $admin->sekolah->nama }}</td>
-                    <td>
-                        <div class="dropdown">
-                            <a class="text-decoration-none text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink{{ $admin->id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                Aksi
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink{{ $admin->id }}">
-                                <li class="p-2">
-                                    <!-- Tombol Edit -->
-                                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#editModal{{ $admin->id }}">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </button>
-                                </li>
-                                <li class="p-2">
-                                    <!-- Tombol Hapus -->
-                                    <button class="btn-danger btn-circle w-100" data-bs-toggle="modal" data-bs-target="#hapusModal{{ $admin->id }}">
-                                        <i class="fas fa-trash"></i> Hapus
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    </td>
                 </tr>
-
-                <!-- Modal Edit -->
-                <div class="modal fade" id="editModal{{ $admin->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $admin->id }}" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Ubah data admin</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form action="#" method="post">
-                            @csrf
-                            @method('PUT')
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <input type="text" class="form-control" id="nama" name="nama" value="{{ $admin->name }}" placeholder="Masukan nama">
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                        </form>
-                    </div>
-                </div>
-                </div>
-
-                <!-- Modal Hapus -->
-                <div class="modal fade" id="hapusModal{{ $admin->id }}" tabindex="-1" aria-labelledby="hapusModalLabel{{ $admin->id }}" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Hapus data admin</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form action="#" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <input type="text" disabled class="form-control" id="nama" name="nama" value="{{ $admin->name }}" placeholder="Masukan nama">
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </div>
-                        </form>
-                    </div>
-                </div>
-                </div>
                 @endforeach
             </tbody>
         </table>

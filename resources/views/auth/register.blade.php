@@ -17,7 +17,7 @@
            <div class="featured-image mb-3">
             <img src="/assets/img/DigiTek.png" class="img-fluid rounded-3" style="width: 100%; height:100%">
            </div>
-           <p class="text-white fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;">Healty Poliklinik</p>
+           <p class="text-white fs-2" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;">DIGITEK</p>
            
        </div> 
     <!-------------------- ------ Right Box ---------------------------->
@@ -31,7 +31,7 @@
                 <form action="{{ route('register') }}" method="post">
                 @csrf
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="nama" name="name">
+                    <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Nama" name="name">
                 </div>
                 <div class="input-group mb-3">
                     <input type="email" class="form-control form-control-lg bg-light fs-6" placeholder="Email address" name="email">
@@ -56,7 +56,7 @@
                         <label for="formCheck" class="form-check-label text-secondary"><small>Remember Me</small></label>
                     </div>
                     <div class="forgot">
-                        <small><a href="#">Forgot Password?</a></small>
+                        <small><a href="{{ route('login') }}">Sudah punya akun?</a></small>
                     </div>
                 </div>
                 <input type="text" value="user" name="role" hidden>
