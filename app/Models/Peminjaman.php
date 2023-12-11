@@ -10,10 +10,10 @@ class Peminjaman extends Model
     use HasFactory;
 
     // Definisikan enum untuk konfirmasi_peminjaman
-    public const KONFIRMASI_PINJAMAN_VALUES = ['tertunda', 'ditolak', 'diterima'];
+    public const KONFIRMASI_PINJAMAN_VALUES = ['tertunda','diterima'];
     
     // Definisikan enum untuk konfirmasi_kembali
-    public const KONFIRMASI_KEMBALI_VALUES = ['tertunda', 'ditolak', 'diterima'];
+    public const KONFIRMASI_KEMBALI_VALUES = ['tertunda','diterima'];
     
     protected $table = 'peminjamans';
     protected $fillable = [

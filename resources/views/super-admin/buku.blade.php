@@ -28,7 +28,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="sekolah">Sekolah</label>
-                                <select class="custom-select rounded-0" id="sekolah" name="sekolah_id">
+                                <select required class="custom-select rounded-0" id="sekolah" name="sekolah_id">
                                     <option disabled selected>Pilih Sekolah</option>
                                     @foreach ($sekolahs as $sekolah)
                                         <option value="{{ $sekolah->id }}">{{ $sekolah->nama }}</option>
@@ -37,15 +37,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="judul">Judul</label>
-                                <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukan judul buku">
+                                <input type="text" required class="form-control" id="judul" name="judul" placeholder="Masukan judul buku">
                             </div>
                             <div class="form-group">
                                 <label for="nama">penulis</label>
-                                <input type="text" class="form-control" id="penulis" name="penulis" placeholder="Masukan penulis buku">
+                                <input type="text" required class="form-control" id="penulis" name="penulis" placeholder="Masukan penulis buku">
                             </div>
                             <div class="form-group">
                                 <label for="nama">Penerbitan</label>
-                                <input type="text" class="form-control" id="penerbitan" name="penerbitan" placeholder="Masukan penerbitan buku">
+                                <input type="text" required class="form-control" id="penerbitan" name="penerbitan" placeholder="Masukan penerbitan buku">
                             </div>
                             <div class="form-group">
                                 <label for="nama">Edisi</label>
@@ -54,12 +54,12 @@
                             <div class="form-group">
                                 <label>Date:</label>
                                   <div class="input-group date">
-                                      <input type="date" name="bulan" class="form-control"/>
+                                      <input type="date" required name="bulan" class="form-control"/>
                                   </div>
                               </div>
                             <div class="form-group">
                                 <label for="nama">ISBN</label>
-                                <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Masukan isbn buku">
+                                <input type="text" required pattern="[0-9]{10,13}" title="Masukkan nomor ISBN yang valid (10-13 digit angka)"  class="form-control" id="isbn" name="isbn" placeholder="Masukan isbn buku">
                             </div>
                             <div class="form-group">
                                 <label for="nama">Subyek</label>
@@ -89,7 +89,7 @@
                                 <label for="exampleInputFile">Sampul</label>
                                 <div class="input-group">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="sampul_buku" id="exampleInputFile">
+                                    <input type="file" required class="custom-file-input" name="sampul_buku" id="exampleInputFile">
                                     <label class="custom-file-label" for="exampleInputFile">Pilih Sampul</label>
                                 </div>
                                 <div class="input-group-append">
@@ -99,7 +99,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleSelectRounded0">Jenis Buku</label>
-                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="jenis_buku_id">
+                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="jenis_buku_id" required>
                                     <option disabled selected>Pilih jenis buku</option>
                                     @foreach ($jenisbukus as $jenisbuku)
                                         <option value="{{ $jenisbuku->id }}">{{ $jenisbuku->nama }}</option>
@@ -117,7 +117,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleSelectRounded0">Lokasi Buku</label>
-                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="lokasi_buku_id">
+                                <select class="custom-select rounded-0" id="exampleSelectRounded0" name="lokasi_buku_id" required>
                                     <option disabled selected>Pilih Lokasi Buku</option>
                                     @foreach ($lokasibukus as $lokasibuku)
                                         <option value="{{ $lokasibuku->id }}">{{ $lokasibuku->lokasi }}</option>
@@ -174,10 +174,8 @@
                 @foreach($bukus as $key => $buku)
                 <tr>
                     <td>{{ $key+1 }}</td>
-                    @if($buku->path)
-                    <td>
-                        <td>{{ $buku->sekolah->nama }}</td>        
-                    </td>
+                    @if($buku->sekolah_id)
+                        <td>{{ $buku->sekolah->nama }}</td>
                     @else
                         <td>Tidak ada</td>
                     @endif
@@ -185,10 +183,18 @@
                     <td>{{ $buku->judul }}</td>
                     <td>{{ $buku->penulis }}</td>
                     <td>{{ $buku->penerbitan }}</td>
+                    @if ($buku->edisi)
                     <td>{{ $buku->edisi }}</td>
+                    @else
+                    <td>Tidak ada</td>
+                    @endif
                     <td>{{ $buku->bulan }}</td>
                     <td>{{ $buku->isbn }}</td>
+                    @if ($buku->subyek)
                     <td>{{ $buku->subyek }}</td>
+                    @else
+                        <td>Tidak ada</td>
+                    @endif
                     <td> 
                         @foreach($buku->namatipebukus as $tipebuku)
                             {{ $tipebuku }}
@@ -198,16 +204,12 @@
                         @endforeach    
                     </td>
                     @if($buku->path)
-                    <td>
                         <td>{{ $buku->jenisbuku->nama }}</td>     
-                    </td>
                     @else
                         <td>Tidak ada</td>
                     @endif
-                    @if($buku->path)
-                    <td>
-                        <td>{{ $buku->lokasibuku->lokasi }}</td> 
-                    </td>
+                    @if($buku->lokasi_buku_id)
+                        <td>{{ $buku->lokasibuku->lokasi }}</td>
                     @else
                         <td>Tidak ada</td>
                     @endif
@@ -298,7 +300,7 @@
                                     <label for="exampleInputFile">Ebook</label>
                                     <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="path" value="" id="exampleInputFile">
+                                        <input type="file" class="custom-file-input" name="path" value="{{ $buku->path }}" id="exampleInputFile">
                                         <label class="custom-file-label" for="exampleInputFile">
                                             @if($buku->path)
                                                 {{ $buku->path }}
@@ -325,7 +327,7 @@
                                     @endif
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" name="sampul_buku" value="" id="exampleInputFile">
+                                            <input type="file" class="custom-file-input" name="sampul_buku" value="{{ $buku->sampul_buku }}" id="exampleInputFile">
                                             <label class="custom-file-label" for="exampleInputFile">
                                                 @if($buku->sampul_buku)
                                                     {{ $buku->sampul_buku }}

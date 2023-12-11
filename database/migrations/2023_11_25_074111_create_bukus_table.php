@@ -13,21 +13,21 @@ return new class extends Migration
     {
         Schema::create('bukus', function (Blueprint $table) {
             $table->id();
-            $table->string('judul')->nullable();
-            $table->string('penulis')->nullable();
-            $table->string('penerbitan')->nullable();
+            $table->string('judul');
+            $table->string('penulis');
+            $table->string('penerbitan');
             $table->string('edisi')->nullable();
-            $table->date('bulan')->nullable();
-            $table->string('isbn')->nullable();
+            $table->date('bulan');
+            $table->string('isbn');
             $table->string('subyek')->nullable();
             $table->string('path')->nullable();
             $table->string('volume')->nullable();
             $table->string('sampul_buku');
             $table->bigInteger('stok')->nullable();
 
-            $table->unsignedBigInteger('lokasi_buku_id')->nullable();
-            $table->unsignedBigInteger('jenis_buku_id')->nullable();
-            $table->unsignedBigInteger('sekolah_id')->nullable();
+            $table->unsignedBigInteger('lokasi_buku_id');
+            $table->unsignedBigInteger('jenis_buku_id');
+            $table->unsignedBigInteger('sekolah_id');
 
             $table->foreign('lokasi_buku_id')->references('id')->on('lokasi_bukus')->onDelete('cascade');
             $table->foreign('jenis_buku_id')->references('id')->on('jenis_bukus')->onDelete('cascade');

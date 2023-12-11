@@ -24,24 +24,33 @@ class UserController extends Controller
                 ->where('jenis_buku_id', 2)->get();
             return view('index', compact('jenisbukus', 'bukus', 'ebooks', 'bukucarts'));
         } else {
-            $bukus = Buku::whereNull('sekolah_id')->get();
-    
-            return view('index', compact('bukus'));
+            $allJenis = JenisBuku::all();
+            $allbukus = Buku::all();
+            $allEbooks = Buku::where('jenis_buku_id',2)->get();
+            return view('index', compact('allbukus', 'allEbooks','allJenis'));
         }
     }
     
     public function buku(Request $request, JenisBuku $jenisbuku){
-        $currentUserSekolahId = auth()->user()->sekolah_id;
-        $jenisbukus = JenisBuku::where('sekolah_id', $currentUserSekolahId)->get();
 
-        $bukuIds = $request->session()->get('cart', []);
-        $bukucarts = Buku::whereIn('id', $bukuIds)->get();
-
-        // Ambil buku berdasarkan jenis buku yang dipilih
-        $bukus = Buku::where('sekolah_id', $currentUserSekolahId)
-        ->where('jenis_buku_id', $jenisbuku->id)
-        ->get();
-        return view('buku',compact('jenisbukus','bukus','bukucarts','jenisbuku'));
+        if (auth()->check()) {
+            # code...
+            $currentUserSekolahId = auth()->user()->sekolah_id;
+            $jenisbukus = JenisBuku::where('sekolah_id', $currentUserSekolahId)->get();
+    
+            $bukuIds = $request->session()->get('cart', []);
+            $bukucarts = Buku::whereIn('id', $bukuIds)->get();
+    
+            // Ambil buku berdasarkan jenis buku yang dipilih
+            $bukus = Buku::where('sekolah_id', $currentUserSekolahId)
+            ->where('jenis_buku_id', $jenisbuku->id)
+            ->get();
+            return view('buku',compact('jenisbukus','bukus','bukucarts','jenisbuku'));
+        } else{
+            $allJenis = JenisBuku::all();
+            $allBukus = Buku::where('jenis_buku_id', $jenisbuku->id)->get();
+            return view('buku',compact('allJenis','allBukus','jenisbuku'));
+        }
     }
     public function addToCart(Request $request, Buku $buku)
     {

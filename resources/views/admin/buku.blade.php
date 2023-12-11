@@ -170,11 +170,23 @@
                     <td>{{ $buku->judul }}</td>
                     <td>{{ $buku->penulis }}</td>
                     <td>{{ $buku->penerbitan }}</td>
-                    <td>{{ $buku->edisi }}</td>
+                    @if ($buku->edisi)
+                        <td>{{ $buku->edisi }}</td>
+                    @else
+                        <td>Tidak ada</td>
+                    @endif
                     <td>{{ $buku->bulan }}</td>
                     <td>{{ $buku->isbn }}</td>
-                    <td>{{ $buku->stok }}</td>
-                    <td>{{ $buku->subyek }}</td>
+                    @if ($buku->stok)
+                        <td>{{ $buku->stok }}</td>
+                    @else
+                        <td>Tidak ada</td>
+                    @endif
+                    @if ($buku->subyek)
+                        <td>{{ $buku->subyek }}</td>
+                    @else
+                        <td>Tidak ada</td>
+                    @endif
                     <td> 
                         @foreach($buku->namatipebukus as $tipebuku)
                             {{ $tipebuku }}
@@ -192,7 +204,11 @@
                     @else
                         <td>Tidak ada</td>
                     @endif
-                    <td>{{ $buku->volume }}</td>
+                    @if ($buku->volume)
+                        <td>{{ $buku->volume }}</td>
+                    @else
+                        <td>Tidak ada</td>
+                    @endif
                     <td>
                         <div class="dropdown">
                             <a class="text-decoration-none text-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink{{ $buku->id }}" data-bs-toggle="dropdown" aria-expanded="false">

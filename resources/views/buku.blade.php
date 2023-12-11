@@ -33,9 +33,15 @@
                                 Koleksi
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="koleksiDropdown">
-                                @foreach ($jenisbukus as $key => $jenis )
-                                <li><a class="dropdown-item" href="{{ route('buku-user', $jenis) }}">{{ $jenis->nama }}</a></li>
-                                @endforeach
+                                @if(auth()->check())
+                                    @foreach ($jenisbukus as $jenis)
+                                        <li><a class="dropdown-item" href="{{ route('buku-user', $jenis) }}">{{ $jenis->nama }}</a></li>
+                                    @endforeach
+                                @else
+                                    @foreach ($allJenis as $jenis)
+                                        <li><a class="dropdown-item" href="{{ route('buku-user', $jenis) }}">{{ $jenis->nama }}</a></li>
+                                    @endforeach
+                                @endif
                             </ul>
                         </li>
                         @if (auth()->check())
@@ -58,6 +64,7 @@
                 </div>
             </div>
         </nav>
+        @if (auth()->check())        
         <!-- Modal Keranjang-->
         <div class="modal fade" id="modalCart" tabindex="-1" aria-labelledby="ModalLabelCart" aria-hidden="true">
             <div class="modal-dialog">
@@ -90,6 +97,7 @@
             </div>
             </div>
         </div>
+        @endif
         <!-- About-->
         <section class="h-50 bg-primary d-flex align-items-center" id="about">
             <div class="container px-4 px-lg-5">
@@ -110,7 +118,7 @@
         </section>
         <section class="container pt-3">
             <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-                @foreach ($bukus as $key => $buku )
+                @forelse( auth()->check() ? $bukus : $allBukus as $key => $buku )
                 <div class="col">
                     <div class="card" style="min-height: 35rem">
                         <img src="{{ asset('storage/' . $buku->sampul_buku) }}" class="card-img-top" style="max-height: 18rem" alt="...">
@@ -147,17 +155,23 @@
                         @endforeach    
                         </p>
                         @endif
-                        @if ($buku->path)
-                        <p class="card-text mb-1">Ebook : 
-                            <a href="{{ route('view-ebook-member',$buku) }}" target="_blank" class="text-decoration-none">Buka</a>
-                        </p>
-                        @else
-                            <a href="{{ route('add-cart',$buku) }}" class="btn btn-success">Tambah</a>
+                        @if (auth()->check())
+                            @if ($buku->path)
+                            <p class="card-text mb-1">Ebook : 
+                                <a href="{{ route('view-ebook-member',$buku) }}" target="_blank" class="text-decoration-none">Buka</a>
+                            </p>
+                            @else
+                                <a href="{{ route('add-cart',$buku) }}" class="btn btn-success">Tambah</a>
+                            @endif
                         @endif
                         </div>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <div class="col-12 text-center">
+                    <p>Tidak ada buku tersedia.</p>
+                </div>
+                @endforelse
             </div>
         </section>
         <!-- Footer-->

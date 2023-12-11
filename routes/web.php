@@ -27,13 +27,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[UserController::class,'index'])->name('home-user');
 Route::get('/jenis-buku/{jenisbuku}',[UserController::class,'buku'])->name('buku-user');
 Route::get('/ebook/{nama}',[BukuController::class,'viewEbookGuest'])->name('view-ebook-guest');
-Route::get('/ebook-member/{buku}',[BukuController::class,'viewEbook'])->name('view-ebook-member');
 
 Route::middleware(['auth:sanctum','role:user'])->group(function(){
     Route::get('cart/{buku}',[UserController::class,'addToCart'])->name('add-cart');
     Route::delete('cart/{buku}', [UserController::class, 'removeFromCart'])->name('hapus-cart');
     Route::post('checkout',[UserController::class, 'checkout'])->name('checkout');
     Route::get('/peminjaman',[PeminjamanController::class,'getByUser'])->name('get-peminjaman-member');
+    Route::get('/ebook-member/{buku}',[BukuController::class,'viewEbook'])->name('view-ebook-member');
 });
 
 

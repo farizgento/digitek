@@ -61,8 +61,13 @@ class BukuController extends Controller
             // Handle jika file PDF tidak ditemukan
             abort(404);
         }
-    
-        return Response::file($filePath, ['content-type' => 'application/pdf']);
+
+        if (auth()->check()) {
+            return Response::file($filePath, ['content-type' => 'application/pdf']);
+        } else{
+            toast('Silahkan Login terlebih dahulu untuk membaca ebook','error');
+            return back();
+        }
     }
 
 
@@ -89,20 +94,20 @@ class BukuController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'judul' => 'nullable|string|max:100',
-            'penulis' => 'nullable|string|max:100',
-            'penerbitan' => 'nullable|string|max:100',
+            'judul' => 'required|string|max:100',
+            'penulis' => 'required|string|max:100',
+            'penerbitan' => 'required|string|max:100',
             'edisi' => 'nullable|string|max:100',
-            'bulan' => 'nullable|string|max:100',
-            'isbn' => 'nullable|string|max:100',
+            'bulan' => 'required|date',
+            'isbn' => 'required|numeric',
             'subyek' => 'nullable|string|max:100',
-            'path' => 'nullable|mimes:pdf|max:10000',
+            'path' => 'mimes:pdf|max:10000',
             'volume' => 'nullable|string|max:100',
             'sampul_buku' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'tipe_buku_id' => 'nullable|array',
-            'lokasi_buku_id' => 'nullable|string|max:100',
-            'jenis_buku_id' => 'nullable|string|max:100',
-            'sekolah_id' => 'nullable|string|max:100',
+            'tipe_buku_id' => 'required|array',
+            'lokasi_buku_id' => 'required|string|max:100',
+            'jenis_buku_id' => 'required|string|max:100',
+            'sekolah_id' => 'required|string|max:100',
             'stok' => 'nullable|numeric|max:1000',
         ]);
     
@@ -157,19 +162,20 @@ class BukuController extends Controller
     public function update(Request $request, Buku $buku)
     {
         $validator = Validator::make($request->all(), [
-            'judul' => 'nullable|string|max:100',
-            'penulis' => 'nullable|string|max:100',
-            'penerbitan' => 'nullable|string|max:100',
+            'judul' => 'required|string|max:100',
+            'penulis' => 'required|string|max:100',
+            'penerbitan' => 'required|string|max:100',
             'edisi' => 'nullable|string|max:100',
-            'bulan' => 'nullable|string|max:100',
-            'isbn' => 'nullable|string|max:100',
+            'bulan' => 'required|date',
+            'isbn' => 'required|string',
             'subyek' => 'nullable|string|max:100',
-            'path' => 'nullable|mimes:pdf|max:10000', // Ubah menjadi nullable
+            'path' => 'nullable|mimes:pdf|max:10000',
             'volume' => 'nullable|string|max:100',
             'sampul_buku' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'lokasi_buku_id' => 'required|nullable|string|max:100',
-            'jenis_buku_id' => 'string|max:100',
-            'sekolah_id' => 'nullable|string|max:100',
+            'tipe_buku_id' => 'required|array',
+            'lokasi_buku_id' => 'required|string|max:100',
+            'jenis_buku_id' => 'required|string|max:100',
+            'sekolah_id' => 'required|string|max:100',
         ]);
     
         if ($validator->fails()) {

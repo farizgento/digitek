@@ -57,18 +57,22 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto my-2 my-lg-0">
                         <li class="nav-item d-flex align-items-center"><a class="nav-link" href="/">Home</a></li>
-                        @if(auth()->check())
                         <li class="nav-item dropdown d-flex align-items-center">
                             <a class="nav-link dropdown-toggle" href="#" id="koleksiDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Koleksi
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="koleksiDropdown">
-                                @foreach ($jenisbukus as $key => $jenis )
-                                <li><a class="dropdown-item" href="{{ route('buku-user', $jenis) }}">{{ $jenis->nama }}</a></li>
-                                @endforeach
+                                @if(auth()->check())
+                                    @foreach ($jenisbukus as $jenis)
+                                        <li><a class="dropdown-item" href="{{ route('buku-user', $jenis) }}">{{ $jenis->nama }}</a></li>
+                                    @endforeach
+                                @else
+                                    @foreach ($allJenis as $jenis)
+                                        <li><a class="dropdown-item" href="{{ route('buku-user', $jenis) }}">{{ $jenis->nama }}</a></li>
+                                    @endforeach
+                                @endif
                             </ul>
                         </li>
-                        @endif
                         @if (auth()->check())
                         <li class="nav-item d-flex align-items-center"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#modalCart">Keranjang</a></li>
                         @endif
@@ -156,13 +160,13 @@
         <section class="page-section" id="services">
             <div class="container px-4 px-lg-5">
                 <h2 class="text-center mt-0">Layanan Untuk Anda</h2>
-                <hr class="divider" />
-                @if (auth()->check())
+                <hr class="divider"/>
                 <div id="cardCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         @php
                             $cardsPerSlide = 4;
-                            $totalBooks = count($ebooks);
+                            $ebooksData = auth()->check() ? $ebooks : $allEbooks;
+                            $totalBooks = count($ebooksData);
                             $totalSlides = ceil($totalBooks / $cardsPerSlide);
                         @endphp
                 
@@ -172,15 +176,15 @@
                                     @for ($j = 0; $j < $cardsPerSlide && ($i * $cardsPerSlide + $j) < $totalBooks; $j++)
                                         @php
                                             $index = $i * $cardsPerSlide + $j;
-                                            $ebook = $ebooks[$index];
+                                            $ebook = $ebooksData[$index];
                                         @endphp
                                         <div class="col-lg-3 col-md-6 text-center">
-                                            <a href="{{ route('view-ebook-member', $ebook) }}" class="text-decoration-none text-dark" target="_blank">
+                                            <a href="{{ route('view-ebook-member',$ebook) }}" target="_blank" class="text-decoration-none text-dark">
                                                 <div class="card" style="min-height: 23rem;">
                                                     <img src="{{ asset('storage/'.$ebook->sampul_buku) }}" class="card-img-top" alt="{{ $ebook->judul }}" style="max-height: 200px">
                                                     <div class="card-body">
                                                         <h5 class="card-title">{{ $ebook->judul }}</h5>
-                                                        <p class="card-text text-start mb-1"><small>Bulan : {{ $ebook->bulan }} </small></p>
+                                                        <p class="card-text text-start mb-1"><small>Halaman : {{ $ebook->halaman }} </small></p>
                                                         <p class="card-text text-start mb-1"><small>ISBN: {{ $ebook->isbn }}</small></p>
                                                     </div>
                                                 </div>
@@ -193,135 +197,13 @@
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#cardCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
+                        <span class="visually-hidden">Sebelumnya</span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#cardCarousel" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
+                        <span class="visually-hidden">Berikutnya</span>
                     </button>
                 </div>
-                
-                
-                
-                @else                    
-                <div id="cardCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="row gx-4 gx-lg-5">
-                                <div class="col-lg-3 col-md-6 text-center">
-                                    <a href="{{ route('view-ebook-guest', 'The-Gods-Of-Mars') }}" class="text-decoration-none text-dark" target="_blank">
-                                        <div class="card" style="min-height: 23rem;">
-                                            <img src="{{ asset('storage/sampul/ebook1.jpg') }}" class="card-img-top" alt="ebook3" style="max-height: 200px">
-                                            <div class="card-body">
-                                            <h5 class="card-title">The Gods Of Mars</h5>
-                                            <p class="card-text text-start mb-1"><small>Pages :227</small></p>
-                                            <p class="card-text text-start mb-1"><small>ISBN :0345324390</small></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-6 text-center">
-                                    <a href="{{ route('view-ebook-guest', 'At-the-Mountains-of-Madness') }}" class="text-decoration-none text-dark" target="_blank">
-                                        <div class="card" style="min-height: 23rem;">
-                                            <img src="{{ asset('storage/sampul/ebook3.jpg') }}" class="card-img-top" alt="ebook3" style="max-height: 200px">
-                                            <div class="card-body">
-                                              <h5 class="card-title">At the Mountains of Madness</h5>
-                                              <p class="card-text text-start mb-1"><small>Pages:100</small></p>
-                                              <p class="card-text text-start mb-1"><small>ISBN :0812974417</small></p>
-                                            </div>
-                                        </div>
-                                        </a>
-                                </div>
-                                <div class="col-lg-3 col-md-6 text-center">
-                                    <a href="{{ route('view-ebook-guest', 'Ghostly-Guardian') }}" class="text-decoration-none text-dark" target="_blank">
-                                        <div class="card" style="min-height: 23rem;">
-                                            <img src="{{ asset('storage/sampul/ebook2.jpg') }}" class="card-img-top" alt="ebook3" style="max-height: 200px">
-                                            <div class="card-body">
-                                              <h5 class="card-title">Ghostly Guardian</h5>
-                                              <p class="card-text text-start mb-1"><small>Pages:83</small></p>
-                                              <p class="card-text text-start mb-1"><small>ISBN :9127301289</small></p>
-                                            </div>
-                                        </div>
-                                        </a>
-                                </div>
-                                <div class="col-lg-3 col-md-6 text-center">
-                                    <a href="{{ route('view-ebook-guest', 'The-Mysterious-Island') }}" class="text-decoration-none text-dark" target="_blank">
-                                        <div class="card" style="min-height: 23rem;">
-                                            <img src="{{ asset('storage/sampul/ebook4.jpg') }}" class="card-img-top" alt="ebook3" style="max-height: 200px">
-                                            <div class="card-body">
-                                              <h5 class="card-title">The Mysterious Island</h5>
-                                              <p class="card-text text-start mb-1"><small>Pages:492</small></p>
-                                              <p class="card-text text-start mb-1"><small>ISBN:0812972120</small></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="row gx-4 gx-lg-5">
-                                <div class="col-lg-3 col-md-6 text-center">
-                                    <a href="{{ route('view-ebook-guest', 'The-Gods-Of-Mars') }}" class="text-decoration-none text-dark" target="_blank">
-                                        <div class="card" style="min-height: 23rem;">
-                                            <img src="{{ asset('storage/sampul/ebook1.jpg') }}" class="card-img-top" alt="ebook3" style="max-height: 200px">
-                                            <div class="card-body">
-                                            <h5 class="card-title">The Gods Of Mars</h5>
-                                            <p class="card-text text-start mb-1"><small>Pages :227</small></p>
-                                            <p class="card-text text-start mb-1"><small>ISBN :0345324390</small></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-6 text-center">
-                                    <a href="{{ route('view-ebook-guest', 'At-the-Mountains-of-Madness') }}" class="text-decoration-none text-dark" target="_blank">
-                                        <div class="card" style="min-height: 23rem;">
-                                            <img src="{{ asset('storage/sampul/ebook3.jpg') }}" class="card-img-top" alt="ebook3" style="max-height: 200px">
-                                            <div class="card-body">
-                                              <h5 class="card-title">At the Mountains of Madness</h5>
-                                              <p class="card-text text-start mb-1"><small>Pages:100</small></p>
-                                              <p class="card-text text-start mb-1"><small>ISBN :0812974417</small></p>
-                                            </div>
-                                        </div>
-                                        </a>
-                                </div>
-                                <div class="col-lg-3 col-md-6 text-center">
-                                    <a href="{{ route('view-ebook-guest', 'Ghostly-Guardian') }}" class="text-decoration-none text-dark" target="_blank">
-                                        <div class="card" style="min-height: 23rem;">
-                                            <img src="{{ asset('storage/sampul/ebook2.jpg') }}" class="card-img-top" alt="ebook3" style="max-height: 200px">
-                                            <div class="card-body">
-                                              <h5 class="card-title">Ghostly Guardian</h5>
-                                              <p class="card-text text-start mb-1"><small>Pages:83</small></p>
-                                              <p class="card-text text-start mb-1"><small>ISBN :9127301289</small></p>
-                                            </div>
-                                        </div>
-                                        </a>
-                                </div>
-                                <div class="col-lg-3 col-md-6 text-center">
-                                    <a href="{{ route('view-ebook-guest', 'The-Mysterious-Island') }}" class="text-decoration-none text-dark" target="_blank">
-                                        <div class="card" style="min-height: 23rem;">
-                                            <img src="{{ asset('storage/sampul/ebook4.jpg') }}" class="card-img-top" alt="ebook3" style="max-height: 200px">
-                                            <div class="card-body">
-                                              <h5 class="card-title">The Mysterious Island</h5>
-                                              <p class="card-text text-start mb-1"><small>Pages:492</small></p>
-                                              <p class="card-text text-start mb-1"><small>ISBN:0812972120</small></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Add more carousel-item for additional cards -->
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#cardCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#cardCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-                @endif
             </div>
         </section>
         <!-- Footer-->
